@@ -1,0 +1,101 @@
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Employee Management System</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#addEmployee" type="submit">Add Employee</button>
+          </div>
+        </div>
+      </nav>
+  
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">EmployeeId</th>
+            <th scope="col">Name</th>
+            <th scope="col">Surname</th>
+            <th scope="col">BirthDate</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let employee of empList">
+            <td>{{employee.id}}</td>
+            <td>{{employee.name}}</td>
+            <td>{{employee.surname}}</td>
+            <td>{{employee.birthdate}}</td>
+            <td>
+                <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#editEmployee">Edit</button>
+                <button type="button" class="btn btn-outline-danger">Delete</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+  <!-- Add Employee Modal -->
+  <div class="modal fade" id="addEmployee" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add new Employee</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="empDetail">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Name</label>
+                  <input type="text" formControlName="name" class="form-control" id="name" aria-describedby="emailHelp">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Surname</label>
+                    <input type="text" formControlName="surname" class="form-control" id="surname" aria-describedby="emailHelp">
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">BirthDate</label>
+                    <input type="date" formControlName="birthdate" class="form-control" id="birthdate" aria-describedby="emailHelp">
+                  </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" (click)="addEmployee()">Add Employee</button>
+                  </div>
+              </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <!-- Edit Employee Modal -->
+  <div class="modal fade" id="editEmployee" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit Employee Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="empDetail">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Name</label>
+                  <input type="text" formControlName="name" class="form-control" id="name" aria-describedby="emailHelp">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Surname</label>
+                    <input type="text" formControlName="surname" class="form-control" id="surname" aria-describedby="emailHelp">
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">BirthDate</label>
+                    <input type="date" formControlName="birthdate" class="form-control" id="birthdate" aria-describedby="emailHelp">
+                  </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" (click)="addEmployee()">Update</button>
+                  </div>
+              </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
