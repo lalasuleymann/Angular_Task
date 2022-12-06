@@ -10,10 +10,14 @@ export class EmployeeService{
 
     addEmpURL : string;
     getEmpURL : string;
+    updateEmpURL : string;
+    deleteEmpURL : string;
 
     constructor(private http: HttpClient) { 
         this.addEmpURL = 'http://localhost:9091/emp/addEmployee';
         this.getEmpURL = 'http://localhost:9091/emp/getAll';
+        this.updateEmpURL = 'http://localhost:9091/emp/updateEmployee'; 
+        this.deleteEmpURL = 'http://localhost:9091/emp/deleteEmployeeById'; 
     }
 
     addEmployee(emp : Employee) : Observable<Employee>{
@@ -22,5 +26,14 @@ export class EmployeeService{
 
     getAllEmployee() : Observable<Employee[]>{
         return this.http.get<Employee[]>(this.getEmpURL);
+    }
+
+    updateEmployee(emp : Employee) : Observable<Employee>{
+        return this.http.put<Employee>(this.updateEmpURL, emp);
+    }
+
+    
+    deleteEmployee(emp: Employee) : Observable<Employee>{
+        return this.http.delete<Employee>(this.deleteEmpURL + "/" + emp.id);
     }
 }

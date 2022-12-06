@@ -28,8 +28,8 @@
             <td>{{employee.surname}}</td>
             <td>{{employee.birthdate}}</td>
             <td>
-                <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#editEmployee">Edit</button>
-                <button type="button" class="btn btn-outline-danger">Delete</button>
+                <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#editEmployee" (click)="editEmployee(employee)">Edit</button>
+                <button type="button" class="btn btn-outline-danger" (click)="deleteEmployee(employee)">Delete</button>
             </td>
         </tr>
         </tbody>
@@ -58,7 +58,7 @@
                   </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" (click)="addEmployee()">Add Employee</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="addEmployee()">Add Employee</button>
                   </div>
               </form>
         </div>
@@ -91,7 +91,7 @@
                   </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-success" (click)="addEmployee()">Update</button>
+                    <button type="button" class="btn btn-success" (click)="updateEmployee()" data-bs-dismiss="modal">Update</button>
                   </div>
               </form>
         </div>

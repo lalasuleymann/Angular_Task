@@ -57,4 +57,28 @@ export class DashboardComponent implements OnInit{
         this.empDetail.controls['surname'].setValue(emp.surname);
         this.empDetail.controls['birthdate'].setValue(emp.birthdate);
     }
+
+    updateEmployee() {
+        this.empObj.id = this.empDetail.value.id;
+        this.empObj.name = this.empDetail.value.name;
+        this.empObj.surname = this.empDetail.value.surname;
+        this.empObj.birthdate = this.empDetail.value.birthdate;
+
+        this.empService.updateEmployee(this.empObj).subscribe(res=>{
+            console.log(res);
+            this.getAllEmployee();
+        }, err=>{
+            console.log(err);
+        });
+    }
+
+    deleteEmployee(emp : Employee) {
+        this.empService.deleteEmployee(emp).subscribe(res=>{
+            console.log(res)
+            alert("Employee Deleted Succesfully!");
+            this.getAllEmployee();
+        }, err=>{
+            console.log(err);
+        });
+    }
 }
