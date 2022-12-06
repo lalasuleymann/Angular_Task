@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import {FormGroup, FormBuilder, FormControl} from '@angular/forms'
-import { Employee } from "src/app/model/employee";
-import { EmployeeService } from "src/app/service/employee.service";
+import { Employee } from "src/app/model/dashboard/employee";
+import { EmployeeService } from "src/app/service/dashboard/employee.service";
 
 @Component({
     selector: 'app-dashboard',

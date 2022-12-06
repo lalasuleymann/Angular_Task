@@ -6,11 +6,13 @@ import { HttpClientModule } from '@angular/common/http'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
+// import { DepartmentComponent } from './component/department/department.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DashboardComponent
+    DashboardComponent,
+    // DepartmentComponent
   ],
   imports: [
     BrowserModule,
@@ -19,6 +21,6 @@ import { DashboardComponent } from './component/dashboard/dashboard.component';
     HttpClientModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }
