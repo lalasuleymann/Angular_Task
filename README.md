@@ -20,3 +20,9 @@
     * app -> service -> department -> servicets, service.spec.ts
     * app -> service -> position -> servicets, service.spec.ts
     * NgModule schemas
+## Day 4
+    * Problems in  department.component.ts(not solved)
+    * Routing in Angular
+    * Error NG8001: is not a known element Angular component, then verify part of this module
+    * Routing with multiple element
+    * Class is using Angular features but is not decorated. Please add an explicit Angular decorator
