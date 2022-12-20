@@ -103,3 +103,55 @@ document.querySelector('.download').addEventListener('click', function(){
 const arr = [4, 5, 6];
 const[a, b, c] = arr;
 console.log(a, b, c);
+
+// Callback function
+const makeFirstWordUpper = function (str){
+    const[first, ...others] = str.split(' ');
+    return[first.toUpperCase(), ...others].join(' ');
+};
+
+const transformedWord = function (str, fn){
+    console.log(`Transformed string : ${fn(str)}`);
+}
+
+transformedWord('hello name is X', makeFirstWordUpper);
+
+// Methods
+
+//filter
+ const numbers = [3, -7, 82, 0, -53, 29];
+ const aboveZero = numbers.filter(function(num){
+    return num > 0;
+ });
+ console.log(numbers);
+ console.log(aboveZero);
+
+ //map
+ const aznToUSD= 1.7
+
+ const convertToUSD = numbers.map(function(convert){
+    return convert*aznToUSD;
+ });
+ console.log(convertToUSD);
+
+ //find
+ const firstNum = numbers.find( num => num < 0 );
+ console.log(firstNum);
+
+ //some
+ const anyNum = numbers.some( num => num > 0 );
+ console.log(anyNum);
+
+ //every
+ const everyNum = numbers.every( num => num < 0 );
+ console.log(everyNum);
+
+
+ //setTimeout and setInterval
+
+ setTimeout(() => console.log('Welcome to my page!'), 5000);
+
+ setInterval(function () {
+    const now = new Date();
+    console.log(now);
+ }, 1000);

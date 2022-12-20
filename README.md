@@ -56,3 +56,6 @@
    * Callback Functions
    * Static Methods
    * Filter, Map, Reduce, Find, Some , Every methods
+## 20.12.2022
+   * Closures
+   * setTimeout and setInterval
