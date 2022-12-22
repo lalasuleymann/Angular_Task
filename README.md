@@ -26,6 +26,9 @@
    * Error NG8001: is not a known element Angular component, then verify part of this module
    * Routing with multiple element
    * Class is using Angular features but is not decorated. Please add an explicit Angular decorator
+## 22.12.2022
+   * Router in Angular
+   * Create multipage Angular project
 
 # Html, Css, Js
 
