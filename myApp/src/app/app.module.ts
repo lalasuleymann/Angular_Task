@@ -3,20 +3,24 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http'
 
-import { AppRoutingModule } from './app-routing.module';
+import { appRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { DashboardComponent } from './component/dashboard/dashboard.component';
+import { EmployeeComponent } from './component/employee/employee.component';
+import { LoginComponent } from './component/login/login.component';
 import { DepartmentComponent } from './component/department/department.component';
+import { PositionComponent } from './component/position/position.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DashboardComponent,
-    DepartmentComponent
+    EmployeeComponent,
+    LoginComponent,
+    DepartmentComponent,
+    PositionComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
+    appRoutingModule,
     ReactiveFormsModule,
     HttpClientModule
   ],

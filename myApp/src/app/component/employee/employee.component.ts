@@ -1,14 +1,14 @@
 import { Component, OnInit } from "@angular/core";
 import {FormGroup, FormBuilder, FormControl} from '@angular/forms'
-import { Employee } from "src/app/model/dashboard/employee";
-import { EmployeeService } from "src/app/service/dashboard/employee.service";
+import { Employee } from "src/app/model/employee/employee";
+import { EmployeeService } from "src/app/service/employee/employee.service";
 
 @Component({
-    selector: 'app-dashboard',
-    templateUrl: './dashboard.component.html',
-    styleUrls: ['./dashboard.component.css']
+    selector: 'app-employee',
+    templateUrl: './employee.component.html',
+    styleUrls: ['./employee.component.css']
 })
-export class DashboardComponent implements OnInit{
+export class EmployeeComponent implements OnInit{
 
     empDetail !: FormGroup;
     empObj : Employee = new Employee();

@@ -29,6 +29,11 @@
 ## 22.12.2022
    * Router in Angular
    * Create multipage Angular project
+## 23.12.2022
+   * components -> department
+   * component -> position
+## 26.12.2022
+   * components -> login
 
 # Html, Css, Js
 

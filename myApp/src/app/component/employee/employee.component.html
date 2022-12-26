@@ -1,23 +1,5 @@
 <div class="container-fluid">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">Employee Management System</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Department</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Position</a>
-              </li>
-            </ul>
-            <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#addEmployee" type="submit">Add Employee</button>
-          </div>
-        </div>
-      </nav>
+      <button class="btn btn-outline-success mt-3" data-bs-toggle="modal" data-bs-target="#addEmployee" type="submit">Add Employee</button>
   
     <table class="table table-hover">
         <thead>
@@ -30,7 +12,17 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let employee of empList">
+          <tr>
+            <td>id</td>
+            <td>ad</td>
+            <td>soyad</td>
+            <td>15.154.12</td>
+            <td>
+                <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#editEmployee">Edit</button>
+                <button type="button" class="btn btn-outline-danger">Delete</button>
+            </td>
+        </tr>
+        <!-- <tr *ngFor="let employee of empList">
             <td>{{employee.id}}</td>
             <td>{{employee.name}}</td>
             <td>{{employee.surname}}</td>
@@ -39,7 +31,7 @@
                 <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#editEmployee" (click)="editEmployee(employee)">Edit</button>
                 <button type="button" class="btn btn-outline-danger" (click)="deleteEmployee(employee)">Delete</button>
             </td>
-        </tr>
+        </tr> -->
         </tbody>
     </table>
   <!-- Add Employee Modal -->
