@@ -34,6 +34,10 @@
    * component -> position
 ## 26.12.2022
    * components -> login
+## 27.12.2022
+   * components -> register
+## 28.12.2022
+   * department functionality
 
 # Html, Css, Js
 

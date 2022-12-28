@@ -1,1 +1,70 @@
-<p>salam</p>
+<div class="container-fluid">
+    <button class="btn btn-outline-success mt-3" data-bs-toggle="modal" data-bs-target="#addEmployee" type="submit">Add Employee</button>
+
+  <table class="table table-hover">
+      <thead>
+      <tr>
+        <th scope="col">DepatmentId</th>
+          <th scope="col">Name</th>
+      </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>id</td>
+          <td>dep1</td>
+          <td>
+              <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#editDepartment">Edit</button>
+              <button type="button" class="btn btn-outline-danger">Delete</button>
+          </td>
+      </tr>
+      </tbody>
+  </table>
+<!-- Add Department Modal -->
+<div class="modal fade" id="addEmployee" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add new Department</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form [formGroup]="depDetail">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Name</label>
+                <input type="text" formControlName="name" class="form-control" id="name" aria-describedby="emailHelp">
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="addDepartment()">Add Department</button>
+                </div>
+            </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Edit Department Modal -->
+<div class="modal fade" id="editEmployee" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Department Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form [formGroup]="depDetail">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Name</label>
+                <input type="text" formControlName="name" class="form-control" id="name" aria-describedby="emailHelp">
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-success" (click)="updateDepartment()" data-bs-dismiss="modal">Update</button>
+                </div>
+            </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
