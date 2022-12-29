@@ -7,7 +7,7 @@ import { PositionComponent } from "./component/position/position.component";
 import { RegisterComponent } from "./component/register/register.component";
 
 const routes : Routes = [
-    { path: '', component: EmployeeComponent },
+    { path: 'employee', component: EmployeeComponent },
     { path: 'login', component: LoginComponent},
     { path: 'register', component: RegisterComponent},
     { path: 'department', component: DepartmentComponent},

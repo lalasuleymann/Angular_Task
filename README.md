@@ -38,6 +38,8 @@
    * components -> register
 ## 28.12.2022
    * department functionality
+## 29.12.2022
+   * position functionality
 
 # Html, Css, Js
 

@@ -74,7 +74,7 @@ export class EmployeeComponent implements OnInit{
 
     deleteEmployee(emp : Employee) {
         this.empService.deleteEmployee(emp).subscribe(res=>{
-            console.log(res)
+            console.log(res)        
             alert("Employee Deleted Succesfully!");
             this.getAllEmployee();
         }, err=>{

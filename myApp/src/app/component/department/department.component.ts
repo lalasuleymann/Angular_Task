@@ -4,6 +4,7 @@ import { Department } from "src/app/model/department/department";
 import { DepartmentService } from "src/app/service/department/department.service";
 
 @Component({ 
+    selector : 'app-department',
     templateUrl : './department.component.html',
     styleUrls: ['./department.component.css']
 })
@@ -56,7 +57,7 @@ export class DepartmentComponent implements OnInit{
         this.depObj.id = this.depDetail.value.id;
         this.depObj.name = this.depDetail.value.name;
 
-        this.depService.updateEmployee(this.depObj).subscribe(res=>{
+        this.depService.updateDepartment(this.depObj).subscribe(res=>{
             console.log(res);
             this.getAllDepartment();
         }, err=>{
@@ -64,7 +65,7 @@ export class DepartmentComponent implements OnInit{
         });
     }
 
-    deleteEmployee(dep : Department) {
+    deleteDepartment(dep : Department) {
         this.depService.deleteDepartment(dep).subscribe(res=>{
             console.log(res)
             alert("Department Deleted Succesfully!");

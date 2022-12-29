@@ -1,1 +1,72 @@
-<p>salam hi hello</p>
+<div class="container-fluid">
+    <button class="btn btn-outline-success mt-3" data-bs-toggle="modal" data-bs-target="#addPosition" type="submit">Add Position</button>
+
+  <table class="table table-hover">
+      <thead>
+      <tr>
+        <th scope="col">PositionId</th>
+        <th scope="col">Name</th>
+        <th scope="col">Action</th>
+      </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>id</td>
+          <td>pos1</td>
+          <td>
+              <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#editPosition">Edit</button>
+              <button type="button" class="btn btn-outline-danger">Delete</button>
+          </td>
+      </tr>
+      </tbody>
+  </table>
+
+<!-- Add Position Modal -->
+<div class="modal fade" id="addPosition" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add new Position</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form [formGroup]="posDetail">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Name</label>
+                <input type="text" formControlName="name" class="form-control" id="name" aria-describedby="emailHelp">
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="addPosition()">Add Position</button>
+                </div>
+            </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Edit Position Modal -->
+<div class="modal fade" id="editPosition" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Position Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form [formGroup]="posDetail">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Name</label>
+                <input type="text" formControlName="name" class="form-control" id="name" aria-describedby="emailHelp">
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-success" (click)="updatePosition()" data-bs-dismiss="modal">Update</button>
+                </div>
+            </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
