@@ -12,17 +12,7 @@
         </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>id</td>
-            <td>ad</td>
-            <td>soyad</td>
-            <td>15.154.12</td>
-            <td>
-                <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#editEmployee">Edit</button>
-                <button type="button" class="btn btn-outline-danger">Delete</button>
-            </td>
-        </tr>
-        <!-- <tr *ngFor="let employee of empList">
+        <tr *ngFor="let employee of empList">
             <td>{{employee.id}}</td>
             <td>{{employee.name}}</td>
             <td>{{employee.surname}}</td>
@@ -31,7 +21,7 @@
                 <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#editEmployee" (click)="editEmployee(employee)">Edit</button>
                 <button type="button" class="btn btn-outline-danger" (click)="deleteEmployee(employee)">Delete</button>
             </td>
-        </tr> -->
+        </tr>
         </tbody>
     </table>
   <!-- Add Employee Modal -->
@@ -43,18 +33,18 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form [formGroup]="empDetail">
+            <form #form="ngForm" (ngSubmit)="addEmployee()">
                 <div class="mb-3">
                   <label for="exampleInputEmail1" class="form-label">Name</label>
-                  <input type="text" formControlName="name" class="form-control" id="name" aria-describedby="emailHelp">
+                  <input type="text" [(ngModel)]="empDetail.name" class="form-control" id="name" aria-describedby="emailHelp">
                 </div>
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Surname</label>
-                    <input type="text" formControlName="surname" class="form-control" id="surname" aria-describedby="emailHelp">
+                    <input type="text"  [(ngModel)]="empDetail.surname" class="form-control" id="surname" aria-describedby="emailHelp">
                   </div>
                   <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">BirthDate</label>
-                    <input type="date" formControlName="birthdate" class="form-control" id="birthdate" aria-describedby="emailHelp">
+                    <input type="date" [(ngModel)]="empDetail.birthdate" class="form-control" id="birthdate" aria-describedby="emailHelp">
                   </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -76,18 +66,18 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form [formGroup]="empDetail">
+            <form #form="ngForm" (ngSubmit)="editEmployee">
                 <div class="mb-3">
                   <label for="exampleInputEmail1" class="form-label">Name</label>
-                  <input type="text" formControlName="name" class="form-control" id="name" aria-describedby="emailHelp">
+                  <input type="text" [(ngModel)]="empDetail.name" class="form-control" id="name" aria-describedby="emailHelp">
                 </div>
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Surname</label>
-                    <input type="text" formControlName="surname" class="form-control" id="surname" aria-describedby="emailHelp">
+                    <input type="text" [(ngModel)]="empDetail.surname" class="form-control" id="surname" aria-describedby="emailHelp">
                   </div>
                   <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">BirthDate</label>
-                    <input type="date" formControlName="birthdate" class="form-control" id="birthdate" aria-describedby="emailHelp">
+                    <input type="date" [(ngModel)]="empDetail.birthdate" class="form-control" id="birthdate" aria-describedby="emailHelp">
                   </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

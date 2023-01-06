@@ -8,32 +8,24 @@ import { Employee } from "../../model/employee/employee";
 })
 export class EmployeeService{
 
-    addEmpURL : string;
-    getEmpURL : string;
-    updateEmpURL : string;
-    deleteEmpURL : string;
+    baseApiUrl: string = 'https://localhost:44305';
 
-    constructor(private http: HttpClient) { 
-        this.addEmpURL = 'http://localhost:9091/emp/addEmployee';
-        this.getEmpURL = 'http://localhost:9091/emp/getAll';
-        this.updateEmpURL = 'http://localhost:9091/emp/updateEmployee'; 
-        this.deleteEmpURL = 'http://localhost:9091/emp/deleteEmployeeById'; 
-    }
+    constructor(private http: HttpClient) {}
 
     addEmployee(emp : Employee) : Observable<Employee>{
-        return this.http.post<Employee>(this.addEmpURL, emp)
+        return this.http.post<Employee>(this.baseApiUrl + '/api/v1/employee', emp)
     }
 
     getAllEmployee() : Observable<Employee[]>{
-        return this.http.get<Employee[]>(this.getEmpURL);
+        return this.http.get<Employee[]>(this.baseApiUrl + '/api/v1/employee');
     }
 
     updateEmployee(emp : Employee) : Observable<Employee>{
-        return this.http.put<Employee>(this.updateEmpURL, emp);
+        return this.http.put<Employee>(this.baseApiUrl + '/api/v1/employee/{employeeId}', emp);
     }
 
     
     deleteEmployee(emp: Employee) : Observable<Employee>{
-        return this.http.delete<Employee>(this.deleteEmpURL + "/" + emp.id);
+        return this.http.delete<Employee>(this.baseApiUrl + '/api/v1/employee/{employeeId}' + "/" + emp.id);
     }
 }

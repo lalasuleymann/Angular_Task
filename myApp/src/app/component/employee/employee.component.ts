@@ -9,32 +9,27 @@ import { EmployeeService } from "src/app/service/employee/employee.service";
     styleUrls: ['./employee.component.css']
 })
 export class EmployeeComponent implements OnInit{
-
-    empDetail !: FormGroup;
+    
+    empDetail: Employee={
+        id: '',
+        name : '',
+        surname : '',
+        birthdate : ''
+    };
+    // empDetail !: FormGroup;
     empObj : Employee = new Employee();
     empList : Employee[] = [];
 
     constructor(private formBuilder: FormBuilder, private empService: EmployeeService) { }
 
-    ngOnInit(): void {
-        
-        this.getAllEmployee();
+    ngOnInit(): void {}
 
-        this.empDetail = this.formBuilder.group({
-            id: [''],
-            name : [''],
-            surname : [''],
-            birthdate : ['']
-        });
-    }
-
-    addEmployee() {
+    addEmployee() {     
         console.log(this.empDetail);
-        this.empObj.id = this.empDetail.value.id;
-        this.empObj.name = this.empDetail.value.name;
-        this.empObj.surname = this.empDetail.value.surname;
-        this.empObj.birthdate = this.empDetail.value.birthdate;
-
+        this.empObj.id= this.empDetail.id;
+        this.empObj.name= this.empDetail.name;
+        this.empObj.surname= this.empDetail.surname;
+        this.empObj.birthdate= this.empDetail.birthdate;
         this.empService.addEmployee(this.empObj).subscribe(res=>{
             console.log(res);
             this.getAllEmployee();
@@ -52,17 +47,17 @@ export class EmployeeComponent implements OnInit{
     }
 
     editEmployee(emp : Employee) {
-        this.empDetail.controls['id'].setValue(emp.id);
-        this.empDetail.controls['name'].setValue(emp.name);
-        this.empDetail.controls['surname'].setValue(emp.surname);
-        this.empDetail.controls['birthdate'].setValue(emp.birthdate);
+        // this.empDetail.controls['id'].setValue(emp.id);
+        // this.empDetail.controls['name'].setValue(emp.name);
+        // this.empDetail.controls['surname'].setValue(emp.surname);
+        // this.empDetail.controls['birthdate'].setValue(emp.birthdate);
     }
 
     updateEmployee() {
-        this.empObj.id = this.empDetail.value.id;
-        this.empObj.name = this.empDetail.value.name;
-        this.empObj.surname = this.empDetail.value.surname;
-        this.empObj.birthdate = this.empDetail.value.birthdate;
+        // this.empObj.id = this.empDetail.value.id;
+        // this.empObj.name = this.empDetail.value.name;
+        // this.empObj.surname = this.empDetail.value.surname;
+        // this.empObj.birthdate = this.empDetail.value.birthdate;
 
         this.empService.updateEmployee(this.empObj).subscribe(res=>{
             console.log(res);
@@ -74,7 +69,7 @@ export class EmployeeComponent implements OnInit{
 
     deleteEmployee(emp : Employee) {
         this.empService.deleteEmployee(emp).subscribe(res=>{
-            console.log(res)        
+            console.log(res)
             alert("Employee Deleted Succesfully!");
             this.getAllEmployee();
         }, err=>{

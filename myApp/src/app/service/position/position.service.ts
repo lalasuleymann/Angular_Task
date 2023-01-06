@@ -8,31 +8,23 @@ import { Position } from "../../model/position/position";
 })
 export class PositionService{
 
-    addPosURL : string;
-    getPosURL : string;
-    updatePosURL : string;
-    deletePosURL : string;
+    baseApiUrl: string = 'https://localhost:44305';
 
-    constructor(private http: HttpClient) { 
-        this.addPosURL = 'http://localhost:9091/pos/addPosition';
-        this.getPosURL = 'http://localhost:9091/pos/getAll';
-        this.updatePosURL = 'http://localhost:9091/pos/updatePosition'; 
-        this.deletePosURL = 'http://localhost:9091/pos/deletePositionById'; 
-    }
+    constructor(private http: HttpClient) {}
 
     addPosition(pos : Position) : Observable<Position>{
-        return this.http.post<Position>(this.addPosURL, pos)
+        return this.http.post<Position>(this.baseApiUrl + '/api/v1/position', pos)
     }
 
     getAllPosition() : Observable<Position[]>{
-        return this.http.get<Position[]>(this.getPosURL);
+        return this.http.get<Position[]>(this.baseApiUrl + '/api/v1/position');
     }
 
     updatePosition(pos : Position) : Observable<Position>{
-        return this.http.put<Position>(this.updatePosURL, pos);
+        return this.http.put<Position>(this.baseApiUrl + '/api/v1/position/{positionId}', pos);
     }
 
     deletePosition(pos: Position) : Observable<Position>{
-        return this.http.delete<Position>(this.deletePosURL + "/" + pos.id);
+        return this.http.delete<Position>(this.baseApiUrl + '/api/v1/position/{positionId}' + "/" + pos.id);
     }
 }

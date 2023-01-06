@@ -7,32 +7,24 @@ import { Department } from "../../model/department/department";
     providedIn : 'root'
 })
 export class DepartmentService{
+   
+    baseApiUrl: string = 'https://localhost:44305';
 
-    addDepURL : string;
-    getDepURL : string;
-    updateDepURL : string;
-    deleteDepURL : string;
-
-    constructor(private http: HttpClient) { 
-        this.addDepURL = 'http://localhost:9091/dep/addDepartment';
-        this.getDepURL = 'http://localhost:9091/dep/getAll';
-        this.updateDepURL = 'http://localhost:9091/dep/updateDepartment'; 
-        this.deleteDepURL = 'http://localhost:9091/dep/deleteDepartmentById'; 
-    }
+    constructor(private http: HttpClient) {}
 
     addDepartment(dep : Department) : Observable<Department>{
-        return this.http.post<Department>(this.addDepURL, dep)
+        return this.http.post<Department>(this.baseApiUrl + '/api/v1/department', dep)
     }
 
     getAllDepartment() : Observable<Department[]>{
-        return this.http.get<Department[]>(this.getDepURL);
+        return this.http.get<Department[]>(this.baseApiUrl + '/api/v1/department');
     }
 
     updateDepartment(dep : Department) : Observable<Department>{
-        return this.http.put<Department>(this.updateDepURL, dep);
+        return this.http.put<Department>(this.baseApiUrl + '/api/v1/department/{departmentId}', dep);
     }
 
     deleteDepartment(dep: Department) : Observable<Department>{
-        return this.http.delete<Department>(this.deleteDepURL + "/" + dep.id);
+        return this.http.delete<Department>(this.baseApiUrl + '/api/v1/department/{departmentId}' + "/" + dep.id);
     }
 }

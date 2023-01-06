@@ -40,6 +40,10 @@
    * department functionality
 ## 29.12.2022
    * position functionality
+## 30.12.2022
+   * connecting api
+## 06.01.2023
+   * functinality details
 
 # Html, Css, Js
 
