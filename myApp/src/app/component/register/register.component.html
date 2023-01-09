@@ -5,25 +5,39 @@
             <div class="signup-content">
                 <div class="signup-form">
                     <h2 class="form-title">Sign up</h2>
-                    <form method="POST" class="register-form" id="register-form">
+                    <form method="POST" class="register-form" id="register-form" [formGroup]="registerForm" (ngSubmit)="registerSubmited()">
                         <div class="form-group">
-                            <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                            <input type="text" name="name" id="name" placeholder="Your Name"/>
+                            <label for="email"><i class="form-label"></i></label>
+                            <input type="email" class="form-control"  id="email" formControlName="email" 
+                            placeholder="Your Email"/>
+                            <div class="form-text text-danger" *ngIf="Email.errors?.['required'] && (Email.dirty || Email.touched)">
+                                Email is Required!
+                            </div>
+                            <div class="form-text text-danger" *ngIf="Email.errors?.['email'] && (Email.dirty || Email.touched)">
+                                Email is Invalid
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="email"><i class="zmdi zmdi-email"></i></label>
-                            <input type="email" name="email" id="email" placeholder="Your Email"/>
+                            <label for="pwd"><i class="form-label"></i></label>
+                            <input type="password" class="form-control" id="pwd" formControlName="pwd"
+                             placeholder="Password"/>
+                             <div class="form-text text-danger" *ngIf="Pwd.errors?.['required'] && (Pwd.dirty || Pwd.touched)">
+                                Password is Required!
+                            </div>
+                            <div class="form-text text-danger" *ngIf="Pwd.errors?.['minLength'] && (Pwd.dirty || Pwd.touched)">
+                                Password should be at least 6 characters long!
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="pass"><i class="zmdi zmdi-lock"></i></label>
-                            <input type="password" name="pass" id="pass" placeholder="Password"/>
+                            <label for="repwd"><i class="form-label"></i></label>
+                            <input type="password" class="form-control" id="repwd" formControlName="repwd"
+                            placeholder="Repeat your password"/>
+                            <div class="form-text text-danger" [ngStyle]="{'display': repeatPass}">
+                                Password is not same
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
-                            <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password"/>
-                        </div>
-                        <div class="form-group">
-                            <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
+                            <input type="checkbox" class="form-check-input" id="agree-term" />
                             <label for="agree-term" class="label-agree-term"><span><span></span></span>I agree all statements in  <a href="#" class="term-service">Terms of service</a></label>
                         </div>
                         <div class="form-group form-button">

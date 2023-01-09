@@ -33,18 +33,21 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form #form="ngForm" (ngSubmit)="addEmployee()">
+            <form [formGroup]="empDetail">
                 <div class="mb-3">
-                  <label for="exampleInputEmail1" class="form-label">Name</label>
-                  <input type="text" [(ngModel)]="empDetail.name" class="form-control" id="name" aria-describedby="emailHelp">
+                  <label for="name"><p class="form-label">Name</p></label>
+                  <input type="name" class="form-control"  id="name" formControlName="name" 
+                  placeholder="Your Name"/>
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Surname</label>
-                    <input type="text"  [(ngModel)]="empDetail.surname" class="form-control" id="surname" aria-describedby="emailHelp">
+                  <label for="surname"><p class="form-label">Surname</p></label>
+                  <input type="surname" class="form-control"  id="surname" formControlName="surname" 
+                  placeholder="Your Surname"/>
                   </div>
                   <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">BirthDate</label>
-                    <input type="date" [(ngModel)]="empDetail.birthdate" class="form-control" id="birthdate" aria-describedby="emailHelp">
+                    <label for="birthdate"><p class="form-label">Birthdate</p></label>
+                    <input type="date" class="form-control"  id="birthdate" formControlName="birthdate" 
+                    placeholder="Your Surname"/>
                   </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -66,18 +69,18 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form #form="ngForm" (ngSubmit)="editEmployee">
+            <form [formGroup]="empDetail">
                 <div class="mb-3">
-                  <label for="exampleInputEmail1" class="form-label">Name</label>
-                  <input type="text" [(ngModel)]="empDetail.name" class="form-control" id="name" aria-describedby="emailHelp">
+                  <label for="name" class="form-label">Name</label>
+                  <input type="text" formControlName="name" class="form-control" id="name" aria-describedby="emailHelp">
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Surname</label>
-                    <input type="text" [(ngModel)]="empDetail.surname" class="form-control" id="surname" aria-describedby="emailHelp">
+                    <label for="surname" class="form-label">Surname</label>
+                    <input type="text" formControlName="surname" class="form-control" id="surname" aria-describedby="emailHelp">
                   </div>
                   <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">BirthDate</label>
-                    <input type="date" [(ngModel)]="empDetail.birthdate" class="form-control" id="birthdate" aria-describedby="emailHelp">
+                    <label for="birthdate" class="form-label">BirthDate</label>
+                    <input type="date" formControlName="birthdate" class="form-control" id="birthdate" aria-describedby="emailHelp">
                   </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

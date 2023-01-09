@@ -8,23 +8,23 @@ import { Department } from "../../model/department/department";
 })
 export class DepartmentService{
    
-    baseApiUrl: string = 'https://localhost:44305';
+    baseApiUrl: string = 'https://localhost:44305/api/v1/';
 
     constructor(private http: HttpClient) {}
 
     addDepartment(dep : Department) : Observable<Department>{
-        return this.http.post<Department>(this.baseApiUrl + '/api/v1/department', dep)
+        return this.http.post<Department>(this.baseApiUrl + 'department', dep)
     }
 
     getAllDepartment() : Observable<Department[]>{
-        return this.http.get<Department[]>(this.baseApiUrl + '/api/v1/department');
+        return this.http.get<Department[]>(this.baseApiUrl + 'department');
     }
 
     updateDepartment(dep : Department) : Observable<Department>{
-        return this.http.put<Department>(this.baseApiUrl + '/api/v1/department/{departmentId}', dep);
+        return this.http.put<Department>(this.baseApiUrl + 'department/{departmentId}', dep);
     }
 
     deleteDepartment(dep: Department) : Observable<Department>{
-        return this.http.delete<Department>(this.baseApiUrl + '/api/v1/department/{departmentId}' + "/" + dep.id);
+        return this.http.delete<Department>(this.baseApiUrl + 'department/{departmentId}' + "/" + dep.id);
     }
 }

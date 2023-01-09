@@ -10,13 +10,7 @@ import { EmployeeService } from "src/app/service/employee/employee.service";
 })
 export class EmployeeComponent implements OnInit{
     
-    empDetail: Employee={
-        id: '',
-        name : '',
-        surname : '',
-        birthdate : ''
-    };
-    // empDetail !: FormGroup;
+    empDetail !: FormGroup;
     empObj : Employee = new Employee();
     empList : Employee[] = [];
 
@@ -26,10 +20,6 @@ export class EmployeeComponent implements OnInit{
 
     addEmployee() {     
         console.log(this.empDetail);
-        this.empObj.id= this.empDetail.id;
-        this.empObj.name= this.empDetail.name;
-        this.empObj.surname= this.empDetail.surname;
-        this.empObj.birthdate= this.empDetail.birthdate;
         this.empService.addEmployee(this.empObj).subscribe(res=>{
             console.log(res);
             this.getAllEmployee();
@@ -47,17 +37,17 @@ export class EmployeeComponent implements OnInit{
     }
 
     editEmployee(emp : Employee) {
-        // this.empDetail.controls['id'].setValue(emp.id);
-        // this.empDetail.controls['name'].setValue(emp.name);
-        // this.empDetail.controls['surname'].setValue(emp.surname);
-        // this.empDetail.controls['birthdate'].setValue(emp.birthdate);
+        this.empDetail.controls['id'].setValue(emp.id);
+        this.empDetail.controls['name'].setValue(emp.name);
+        this.empDetail.controls['surname'].setValue(emp.surname);
+        this.empDetail.controls['birthdate'].setValue(emp.birthdate);
     }
 
     updateEmployee() {
-        // this.empObj.id = this.empDetail.value.id;
-        // this.empObj.name = this.empDetail.value.name;
-        // this.empObj.surname = this.empDetail.value.surname;
-        // this.empObj.birthdate = this.empDetail.value.birthdate;
+        this.empObj.id = this.empDetail.value.id;
+        this.empObj.name = this.empDetail.value.name;
+        this.empObj.surname = this.empDetail.value.surname;
+        this.empObj.birthdate = this.empDetail.value.birthdate;
 
         this.empService.updateEmployee(this.empObj).subscribe(res=>{
             console.log(res);

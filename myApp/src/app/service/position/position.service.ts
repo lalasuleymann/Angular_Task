@@ -8,23 +8,23 @@ import { Position } from "../../model/position/position";
 })
 export class PositionService{
 
-    baseApiUrl: string = 'https://localhost:44305';
+    baseApiUrl: string = 'https://localhost:44305/api/v1/';
 
     constructor(private http: HttpClient) {}
 
     addPosition(pos : Position) : Observable<Position>{
-        return this.http.post<Position>(this.baseApiUrl + '/api/v1/position', pos)
+        return this.http.post<Position>(this.baseApiUrl + 'position', pos)
     }
 
     getAllPosition() : Observable<Position[]>{
-        return this.http.get<Position[]>(this.baseApiUrl + '/api/v1/position');
+        return this.http.get<Position[]>(this.baseApiUrl + 'position');
     }
 
     updatePosition(pos : Position) : Observable<Position>{
-        return this.http.put<Position>(this.baseApiUrl + '/api/v1/position/{positionId}', pos);
+        return this.http.put<Position>(this.baseApiUrl + 'position/{positionId}', pos);
     }
 
     deletePosition(pos: Position) : Observable<Position>{
-        return this.http.delete<Position>(this.baseApiUrl + '/api/v1/position/{positionId}' + "/" + pos.id);
+        return this.http.delete<Position>(this.baseApiUrl + 'position/{positionId}' + "/" + pos.id);
     }
 }
