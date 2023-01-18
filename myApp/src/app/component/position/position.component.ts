@@ -1,74 +1,81 @@
-import { Component, OnInit } from "@angular/core"; 
+import { Component, EventEmitter, OnInit } from "@angular/core"; 
 import {FormGroup, FormBuilder, FormControl} from '@angular/forms';
-import { Position } from "src/app/model/position/position";
 import { PositionService } from "src/app/service/position/position.service";
+import { Position } from "src/app/model/position/position";
 @Component({ 
     templateUrl : './position.component.html',
     styleUrls: ['./position.component.css']
 })
 export class PositionComponent implements OnInit{
 
-    posDetail !: FormGroup;
-    posObj : Position = new Position();
-    posList : Position[] = [];
+    positionForm : FormGroup;
+    position : Position;
+    positions : Position[] = [];
+    currentPositionId: number;
 
-    constructor(private formBuilder: FormBuilder, private posService: PositionService) { }
+    constructor(private formBuilder: FormBuilder, private positionService: PositionService) { 
+        this.position ={
+            name : ''
+        };
+        this.positionForm = formBuilder.group({});
+    }
 
     ngOnInit(): void {
-        
-        this.getAllPosition();
-
-        this.posDetail = this.formBuilder.group({
+        this.positionForm = this.formBuilder.group({
             id: [''],
-            name : [''],
+            name: [''],
+        });
+
+        this.getAllPositions();
+    }
+
+    getAllPositions() {
+        this.positionService.getAllPositions().subscribe(res => {
+            this.positions = res.positions;
         });
     }
 
     addPosition() {
-        console.log(this.posDetail);
-        this.posObj.id = this.posDetail.value.id;
-        this.posObj.name = this.posDetail.value.name;
+        let position : Position = {
+            name : this.Name.value
+        }
 
-        this.posService.addPosition(this.posObj).subscribe(res=>{
-            console.log(res);
-            this.getAllPosition();
-        }, err=>{
-            console.log(err);
+        this.positionService.addPosition(position).subscribe((res)=>{
+            this.getAllPositions();
         });
-    }
-
-    getAllPosition() {
-        this.posService.getAllPosition().subscribe(res=>{
-            this.posList = res;
-        }, err =>{
-            console.log("Error occured while fetching data!");
-        });
-    }
-
-    editPosition(dep : Position) {
-        this.posDetail.controls['id'].setValue(dep.id);
-        this.posDetail.controls['name'].setValue(dep.name);
     }
 
     updatePosition() {
-        this.posObj.id = this.posDetail.value.id;
-        this.posObj.name = this.posDetail.value.name;
-
-        this.posService.updatePosition(this.posObj).subscribe(res=>{
-            console.log(res);
-            this.getAllPosition();
-        }, err=>{
-            console.log(err);
-        });
+        if(this.positionForm.valid){
+            this.positionService.updatePosition(this.currentPositionId, this.positionForm.value)
+            .subscribe({
+                next:(res)=>{
+                    this.positionForm.reset();
+                    this.getAllPositions();
+                }
+            });
+        }
     }
 
-    deletePosition(dep : Position) {
-        this.posService.deletePosition(dep).subscribe(res=>{
-            console.log(res)
-            alert("Position Deleted Succesfully!");
-            this.getAllPosition();
-        }, err=>{
-            console.log(err);
+    editPosition(posId: number) {
+        this.currentPositionId = posId;
+        let currentPosition = this.positions.find((d)=>{return d.id === posId});
+        this.positionForm.setValue({
+            id: currentPosition.id,
+            name: currentPosition.name
+        })
+    }
+
+    public collection : any = [];
+    deletePosition(pos: number) {
+        alert('Sure to Delete?');
+        this.collection.pop();
+        this.positionService.deletePosition(pos).subscribe((result)=>{
+            this.getAllPositions();
         });
+    }
+    
+    get Name(): FormControl{
+        return this.positionForm.get('name') as FormControl;
     }
 }

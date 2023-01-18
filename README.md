@@ -44,6 +44,10 @@
    * connecting api
 ## 06.01.2023
    * functinality details
+## 09.01.2023
+   * login functionality
+   * register functionality
+   * 
 
 # Html, Css, Js
 

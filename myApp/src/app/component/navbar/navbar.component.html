@@ -1,0 +1,35 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+      <a class="navbar-brand">Employee Management System</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse container-fluid" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" routerLink="/employee">Employee</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" routerLink="/department">Department</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/position">Position</a>
+          </li>
+          <div class="dropdown">
+            <button class="btn btn-main dropdown" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
+              Permission
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <li><a class="dropdown-item" routerLink="/allPermissions">All</a></li>
+              <li><a class="dropdown-item" routerLink="/grantedPermissions">Granted</a></li>
+            </ul>
+          </div>
+        </ul>
+        <a class="nav-link admin-privilege" routerLink="/userPermission">UserPermission</a>
+          <a class="nav-link logged user"></a>
+        <div>
+          <a class="btn btn-outline-success" (click)="logOut()" outerLink="/login">Logout</a>
+        </div>
+    </div>
+  </div>
+</nav>

@@ -1,7 +1,8 @@
-import { NONE_TYPE } from "@angular/compiler";
 import { Component, OnInit } from "@angular/core"; 
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { RegisterService } from "src/app/service/register/register.service";
+import { Router } from "@angular/router";
+import { AuthService } from "src/app/service/auth/auth.service";
+import { LoginComponent } from "../login/login.component";
 
 @Component({ 
     templateUrl : './register.component.html',
@@ -9,42 +10,51 @@ import { RegisterService } from "src/app/service/register/register.service";
 })
 export class RegisterComponent implements OnInit{
 
-    repeatPass: string = 'none';
-    constructor(private register: RegisterService){}
+    constructor(private router: Router, private register: AuthService){}
 
     ngOnInit(): void {
     }
 
     registerForm = new FormGroup({
+        name: new FormControl("", [
+           Validators.required
+        ]),
+        surname: new FormControl("", [
+           Validators.required
+        ]),
         email: new FormControl("", [Validators.required, Validators.email]),
-        pwd: new FormControl("", [
+        password: new FormControl("", [
             Validators.required,
             Validators.minLength(6)
          ]),
-        repwd: new FormControl("")
+         rePassword: new FormControl("", [
+            Validators.required,
+            Validators.minLength(6)
+         ])
     });
 
-    registerSubmited(){
+    registerSubmited(): void{
         this.register.registerUser(
-            [this.registerForm.value.email, this.registerForm.value.pwd])
+            [this.registerForm.value.name,this.registerForm.value.surname,this.registerForm.value.email, this.registerForm.value.password, this.registerForm.value.rePassword])
             .subscribe(res=>{
-                if(this.Pwd.value == this.RePwd.value){
-                   console.log(this.registerForm.valid);
-                   this.repeatPass = 'none';
-                }else{
-                   this.repeatPass = 'inline';
-                }
+                this.registerForm.reset();
+                this.router.navigateByUrl('login');
             });
-        console.log(this.registerForm);
     }
 
     get Email(): FormControl{
         return this.registerForm.get('email') as FormControl;
     }
-    get Pwd(): FormControl{
-        return this.registerForm.get('pwd') as FormControl;
+    get Password(): FormControl{
+        return this.registerForm.get('password') as FormControl;
     }
-    get RePwd(): FormControl{
-        return this.registerForm.get('repwd') as FormControl;
+    get RePassword(): FormControl{
+        return this.registerForm.get('rePassword') as FormControl;
+    }
+    get Name(): FormControl{
+        return this.registerForm.get('name') as FormControl;
+    }
+    get Surname(): FormControl{
+        return this.registerForm.get('surname') as FormControl;
     }
 }

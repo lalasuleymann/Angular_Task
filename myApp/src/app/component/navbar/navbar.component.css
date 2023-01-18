@@ -1,0 +1,22 @@
+*{
+    font-family: 'Poppins', sans-serif;
+}
+/* .loginP{
+     text-align: center;
+    font-size: larger;
+     margin-top: 50px;
+    visibility: hidden;
+ } */
+.dropdown{
+    color: gray;
+}
+.dropdown-item{
+    color: gray;
+}
+.admin-privilege{
+    /* visibility: hidden; */
+    color: gray;
+}
+/* .logout{
+    display: none;
+} */

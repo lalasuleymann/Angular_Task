@@ -1,3 +1,4 @@
+<app-navbar></app-navbar>
 <div class="container-fluid">
     <button class="btn btn-outline-success mt-3" data-bs-toggle="modal" data-bs-target="#addPosition" type="submit">Add Position</button>
 
@@ -10,19 +11,19 @@
       </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let position of posList">
+        <tr *ngFor="let position of positions;index as positionId">
           <td>{{position.id}}</td>
           <td>{{position.name}}</td>
           <td>
-              <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#editPosition" (click)="editPosition(position)">Edit</button>
-              <button type="button" class="btn btn-outline-danger" (click)="deletePosition(position)">Delete</button>
+              <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#editPosition" (click)="editPosition(position.id)">Edit</button>
+              <button type="button" class="btn btn-outline-danger" (click)="deletePosition(position.id)">Delete</button>
           </td>
       </tr>
       </tbody>
   </table>
 
 <!-- Add Position Modal -->
-<div class="modal fade" id="addPosition" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addPosition"  data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -30,7 +31,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-          <form [formGroup]="posDetail">
+          <form [formGroup]="positionForm">
               <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Name</label>
                 <input type="text" formControlName="name" class="form-control" id="name" aria-describedby="emailHelp">
@@ -47,7 +48,7 @@
 
 
 <!-- Edit Position Modal -->
-<div class="modal fade" id="editPosition" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="editPosition"  data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -55,7 +56,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-          <form [formGroup]="posDetail">
+          <form [formGroup]="positionForm">
               <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Name</label>
                 <input type="text" formControlName="name" class="form-control" id="name" aria-describedby="emailHelp">

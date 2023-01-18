@@ -1,45 +1,52 @@
-import { Component, OnInit } from "@angular/core"; 
+import { Component, ElementRef, OnInit, ViewChild} from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { LoginService } from "src/app/service/login/login.service";
-
-@Component({ 
+import { Router } from "@angular/router";
+import { BehaviorSubject } from "rxjs";
+import { AppComponent } from "src/app/app.component";
+import { AuthService } from "src/app/service/auth/auth.service";
+@Component({
     templateUrl : './login.component.html',
-    styleUrls : ['./login.component.css']
+    styleUrls : ['./login.component.css'],
 })
 export class LoginComponent implements OnInit{
 
-    constructor(private login: LoginService){}
-
+    constructor(private router: Router, private loginAuth: AuthService){}
     ngOnInit(): void {
     }
-
     loginForm = new FormGroup({
         email : new FormControl("", [Validators.required, Validators.email]),
-        pwd : new FormControl("",[
-           Validators.required,
-           Validators.minLength(6)
-        ]),
+        password : new FormControl("",[
+            Validators.required,
+        ])
     });
 
-    isUserValid: boolean = false;
+    loginSubmited(): void{
+        this.loginAuth.loginUser(
+            [this.loginForm.value.email, this.loginForm.value.password])
+            .subscribe((res)=> {
+                if(res == null){
+                    if(this.Email.value || this.Password.value){
 
-    loginSubmited(){
-        this.login.loginUser(
-            [this.loginForm.value.email, this.loginForm.value.pwd])
-            .subscribe(res=> {
-                if(res == 'Failure'){
-                    console.log(this.loginForm.valid);
-                    this.isUserValid = false;   
+                    }
+                    this.loginAuth.logout(); //for guard
                 }else{
-                    this.isUserValid = true;
+                    this.loginAuth.login(); //for guard
+                    this.router.navigateByUrl('employee');
+                    this.loginAuth.setToken(res); //getting token
                 }
             });
-        console.log(this.loginForm)
     }
+    // setcookie(){
+    //     var e = document.getElementById('email').value;
+    //     var p = document.getElementById('password').value;
+
+    //     document.cookie = "myemail" + e + ";path=http://localhost:4200/";
+    //     document.cookie = "mypassword" + p + ";path=http://localhost:4200/";
+    // }
     get Email(): FormControl{
         return this.loginForm.get('email') as FormControl;
     }
-    get Pwd(): FormControl{
-        return this.loginForm.get('pwd') as FormControl;
-    }
+    get Password(): FormControl{
+        return this.loginForm.get('password') as FormControl;
+    } 
 }

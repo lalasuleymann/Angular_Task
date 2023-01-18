@@ -8,23 +8,31 @@ import { Position } from "../../model/position/position";
 })
 export class PositionService{
 
-    baseApiUrl: string = 'https://localhost:44305/api/v1/';
+    baseApiUrl: string = 'https://localhost:44305/api/v1/position/';
 
     constructor(private http: HttpClient) {}
 
-    addPosition(pos : Position) : Observable<Position>{
-        return this.http.post<Position>(this.baseApiUrl + 'position', pos)
+    addPosition(position : Position) : Observable<positionResponse>{
+        return this.http.post<positionResponse>(`${this.baseApiUrl}`, position)
     }
 
-    getAllPosition() : Observable<Position[]>{
-        return this.http.get<Position[]>(this.baseApiUrl + 'position');
+    getAllPositions() : Observable<positionResponses>{
+        return this.http.get<positionResponses>(`${this.baseApiUrl}`);
     }
 
-    updatePosition(pos : Position) : Observable<Position>{
-        return this.http.put<Position>(this.baseApiUrl + 'position/{positionId}', pos);
+    updatePosition(pos: number, position : Position) : Observable<Position>{
+        return this.http.put<Position>(`${this.baseApiUrl}${pos}`, position);
     }
 
-    deletePosition(pos: Position) : Observable<Position>{
-        return this.http.delete<Position>(this.baseApiUrl + 'position/{positionId}' + "/" + pos.id);
+    deletePosition(pos: number) : Observable<Position>{
+        return this.http.delete<Position>(`${this.baseApiUrl}${pos}`);
     }
+    
+}
+export class positionResponses{
+    positions : Position[];
+}
+
+export class positionResponse{
+    positions : Position;
 }
