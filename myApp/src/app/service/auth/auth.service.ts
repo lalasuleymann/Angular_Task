@@ -20,13 +20,14 @@ export class AuthService{
             this.baseApiUrl + 'login',
             {
                 Email: loginInfo[0],
-                Password: loginInfo[1]
+                Password: loginInfo[1],
+                Name: loginInfo[2],
+                Surname: loginInfo[3]
             },
             {
                 responseType: 'text'
             })
     };
-    
     registerUser(registerInfo: Array<any>)
     {
         return this.http.post(
@@ -42,7 +43,7 @@ export class AuthService{
                 responseType: 'text'
             })
     }
-      
+
     setToken(token: string){
         localStorage.setItem("access_token", token);
         this.loadCurrentUser();
@@ -55,25 +56,17 @@ export class AuthService{
     loadCurrentUser(){
         const token = localStorage.getItem("access_token");
         const userInfo = token != null? this.jwtHelperService.decodeToken(token) : null;
+        if(this.jwtHelperService.isTokenExpired(token)){
+            this.removeToken();
+        }
         const data = userInfo? {
             id : userInfo.id,
             email : userInfo.email,
             password : userInfo.password,
-            date: new Date(userInfo.expirationDate)
+            token: userInfo.token
         } : null;
         this.currentUser.next(data);
     }
-
-    // autoLogin(){
-    //     let data :{
-    //         id: number,
-    //         email: string,
-    //         expirationDate: string
-    //     } = JSON.parse(localStorage.getItem("access_token"));
-    //     if(!data){
-    //         return;
-    //     }
-    // }
     
     isLoggedIn(){
         return localStorage.getItem('access_token');
@@ -82,16 +75,13 @@ export class AuthService{
         return localStorage.removeItem('access_token');
     }
     loggedIn: boolean = false;
-    // loggedOut: boolean = true;
 
     login(){
         this.loggedIn = true;
-        // this.loggedOut = false;
     }
 
     logout(){
         this.loggedIn = false;
-        // this.loggedOut = true;
     }
 
     isAuthenticated(){

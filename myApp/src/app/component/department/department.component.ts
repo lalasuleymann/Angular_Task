@@ -1,5 +1,7 @@
 import { Component, EventEmitter, OnInit } from "@angular/core"; 
 import {FormGroup, FormBuilder, FormControl, Validators} from '@angular/forms'
+import { Toast, ToastrService } from "ngx-toastr";
+import { AddDepartment } from "src/app/model/department/addDepartment";
 import { Department } from "src/app/model/department/department";
 import { DepartmentService } from "src/app/service/department/department.service";
 
@@ -11,14 +13,16 @@ import { DepartmentService } from "src/app/service/department/department.service
 
 export class DepartmentComponent implements OnInit{
 
-    departmentForm : FormGroup;
+        departmentForm : FormGroup;
     department : Department;
     departments : Department[] = [];
     currentDepartmentId: number;
 
-    constructor(private formBuilder: FormBuilder, private departmentService: DepartmentService) {
+    constructor(private toastr: ToastrService,private formBuilder: FormBuilder, private departmentService: DepartmentService) {
         this.department ={
-            name : ''
+            name : '',
+            createdDate: Date=null,
+            modifiedDate: Date =null
         }
         this.departmentForm = formBuilder.group({});
      }
@@ -27,6 +31,8 @@ export class DepartmentComponent implements OnInit{
         this.departmentForm = this.formBuilder.group({
             id: [''],
             name : ['', Validators.required],
+            createdDate : [''],
+            modifiedDate : ['']
         });
         this.getAllDepartments();
     }
@@ -34,17 +40,19 @@ export class DepartmentComponent implements OnInit{
     getAllDepartments(){
         this.departmentService.getAllDepartments().subscribe(res=>{
                 this.departments =res.departments;
-        });  
+        }); 
     }
     
     addDepartment() {
-        let department : Department = {
-            name : this.Name.value
+        let department : AddDepartment = {
+            name : this.Name.value,
+
         }
 
         this.departmentService.addDepartment(department).subscribe((res)=>{
             this.getAllDepartments();
         });
+        this.departmentForm.reset();
     }
 
     updateDepartment() {
@@ -65,7 +73,9 @@ export class DepartmentComponent implements OnInit{
         let currentDepartment = this.departments.find((d)=>{return d.id === depId});
         this.departmentForm.setValue({
             id: currentDepartment.id,
-            name: currentDepartment.name
+            name: currentDepartment.name,
+            createdDate: currentDepartment.createdDate,
+            modifiedDate: currentDepartment.modifiedDate
         })
     }
 
@@ -81,5 +91,11 @@ export class DepartmentComponent implements OnInit{
     
     get Name(): FormControl{
         return this.departmentForm.get('name') as FormControl;
+    }
+    get CreatedDate(): FormControl{
+        return this.departmentForm.get('createdDate') as FormControl;
+    }
+    get ModifiedDate(): FormControl{
+        return this.departmentForm.get('modifiedDate') as FormControl;
     }
 }

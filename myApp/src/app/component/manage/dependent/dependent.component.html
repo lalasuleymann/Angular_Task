@@ -1,2 +1,16 @@
 <app-navbar></app-navbar>
-<div>Dependent</div>
+<div class="container-fluid">
+  <table class="table table-hover">
+      <thead>
+      <tr>
+        <th scope="col">DependentId</th>
+        <th scope="col">Name</th>
+      </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let employee of employees">
+          <td>{{employee.id}}</td>
+          <td>{{employee.name}}</td>
+      </tr>
+      </tbody>
+  </table>

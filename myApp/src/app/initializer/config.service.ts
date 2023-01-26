@@ -24,11 +24,10 @@ export class ConfigService{
     constructor(private http: HttpClient){}
 
     fetchEndpoints(){
-        this.http.get<Endpoints>('')
+          this.http.get<Endpoints>('https://localhost:44305/api/v1/config')
           .subscribe({
             next: (endpoints) => this.endpoints.next(endpoints),
             error: () => this.endpoints.next({api: ''})
           });
-
     }
 }

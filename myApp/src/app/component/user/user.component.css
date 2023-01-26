@@ -1,15 +1,13 @@
-/* .nav-item .nav-link{
+.nav-item .nav-link{
     margin-left: 20px;
 }
 .navbar-nav{
     margin-left: 120px;
-} */
+}
 .btn-outline-success {
     float: right;
 }
+
 table{
     font-size: 15px;
-} 
-/* *{
-    font-family: 'Poppins', sans-serif;
-} */
+}

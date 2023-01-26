@@ -1,7 +1,13 @@
 import { Component, EventEmitter, OnInit } from "@angular/core"; 
-import {FormGroup, FormBuilder, FormControl} from '@angular/forms';
+import {FormGroup, FormBuilder, FormControl, Validators} from '@angular/forms';
 import { PositionService } from "src/app/service/position/position.service";
 import { Position } from "src/app/model/position/position";
+import { PermissionService } from "src/app/service/permission/permission.service";
+import { Permission } from "src/app/model/permission/permission";
+import { ToastrModule, ToastrService } from "ngx-toastr";
+import { Router } from "@angular/router";
+import { UserPermission } from "src/app/model/userPermission/userpermission";
+import { addPosition } from "src/app/model/position/addPosition";
 @Component({ 
     templateUrl : './position.component.html',
     styleUrls: ['./position.component.css']
@@ -12,10 +18,13 @@ export class PositionComponent implements OnInit{
     position : Position;
     positions : Position[] = [];
     currentPositionId: number;
+    userPermission: UserPermission
 
-    constructor(private formBuilder: FormBuilder, private positionService: PositionService) { 
+    constructor(private router: Router,private toast:ToastrService,public permissionService: PermissionService, private formBuilder: FormBuilder, private positionService: PositionService) { 
         this.position ={
-            name : ''
+            name : '',
+            createdDate : Date= null,
+            modifiedDate : Date= null,
         };
         this.positionForm = formBuilder.group({});
     }
@@ -23,10 +32,19 @@ export class PositionComponent implements OnInit{
     ngOnInit(): void {
         this.positionForm = this.formBuilder.group({
             id: [''],
-            name: [''],
+            name: ['', Validators.required],
+            createdDate : [''],
+            modifiedDate : [''],
         });
 
-        this.getAllPositions();
+        // this.permissionService.checkPermission(this.userPermission).subscribe(res=>{
+        //     if(true){
+                this.getAllPositions();
+        //     }else{
+        //         this.toast.error("You have no Permission for this action!");
+        //     }
+        // });
+        
     }
 
     getAllPositions() {
@@ -35,14 +53,25 @@ export class PositionComponent implements OnInit{
         });
     }
 
+    // isDisable(){
+    //     this.permissionService.checkPermission(this.userPermission).subscribe(res=>{
+    //         if(true){
+                
+    //         }else{
+    //             this.toast.error("You have no Permission for this action!");
+    //         }
+    //     })
+    // }
+    
     addPosition() {
-        let position : Position = {
-            name : this.Name.value
+        let position : addPosition = {
+            name : this.Name.value,
         }
-
+      
         this.positionService.addPosition(position).subscribe((res)=>{
             this.getAllPositions();
-        });
+        }); 
+        this.positionForm.reset();
     }
 
     updatePosition() {
@@ -55,6 +84,7 @@ export class PositionComponent implements OnInit{
                 }
             });
         }
+        this.getAllPositions();
     }
 
     editPosition(posId: number) {
@@ -62,7 +92,9 @@ export class PositionComponent implements OnInit{
         let currentPosition = this.positions.find((d)=>{return d.id === posId});
         this.positionForm.setValue({
             id: currentPosition.id,
-            name: currentPosition.name
+            name: currentPosition.name,
+            createdDate: currentPosition.createdDate,
+            modifiedDate: currentPosition.modifiedDate
         })
     }
 
@@ -77,5 +109,11 @@ export class PositionComponent implements OnInit{
     
     get Name(): FormControl{
         return this.positionForm.get('name') as FormControl;
+    }
+    get CreatedDate(): FormControl{
+        return this.positionForm.get('createdDate') as FormControl;
+    }
+    get ModifiedDate(): FormControl{
+        return this.positionForm.get('modifiedDate') as FormControl;
     }
 }

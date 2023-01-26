@@ -5,9 +5,13 @@ export class Employee{
     id? : number = 0;
     name : string = '';
     surname : string = '';
-    birthdate: Date = null;
+    birthDate: Date ;
+    employeeParentId: number;
+    employeeParentName: string;
     createdDate: Date;
     modifiedDate: Date;
-    positionId : Position[] = [{id : 0 ,name : ''}];
-    departmentIds: Department[] = [{ id : 0 , name :''}];
+    positionId : number;
+    positionName: string;
+    departmentId: number;
+    departmentName: string;
 }

@@ -1,0 +1,83 @@
+<app-navbar></app-navbar>
+<div class="container-fluid admin">
+
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Name</th>
+      <th scope="col">Surname</th>
+      <th scope="col">Email</th>
+      <th scope="col">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{user.id}}</td>
+        <td>{{user.name}}</td>
+        <td>{{user.surname}}</td>
+        <td>{{user.email}}</td>
+        <td>
+            <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#assignPermission"(click)="getAllPermissions(user)" type="submit">Set Permission</button>
+            <!-- <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#UserPermission"(click)="managerEmployees(user.id)" type="submit">Users Permission</button> -->
+        </td>
+    </tr>
+    </tbody>
+</table>
+    <!-- Add Permission Modal -->
+  <div class="modal fade" id="assignPermission" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Assign Permissions</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" >
+          <form method="POST" [formGroup]="permissionForm">
+            <div class="form-group">
+              <div class="mb-3" >
+                <ng-multiselect-dropdown 
+                  [placeholder]="'Permissions'"
+                  [settings]="dropdownSettings"
+                  [data]="dropdownList"
+                  [(ngModel)]="selectedPermissions"
+                  formControlName="permissionId">
+                  [values]="permission.id"
+                  </ng-multiselect-dropdown>
+              </div> 
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="addPermission(user.id)">Assign</button>
+            </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Add Permission Modal -->
+
+    <!-- Add Permission Modal -->
+    <!-- <div class="modal fade" id="UserPermission" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Assign Permissions</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3" >
+              <ng-multiselect-dropdown 
+                [placeholder]="'User Permissions'"
+                [settings]="dropdownSettings"
+                [data]="dropdownList2"
+                [(ngModel)]="selectedPermissions2">
+                </ng-multiselect-dropdown>
+            </div>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-outline-success">Assign</button>
+          </div>
+        </div>
+      </div>
+    </div> -->
+  <!-- Add Permission Modal -->
