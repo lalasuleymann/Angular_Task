@@ -6,5 +6,5 @@ export class UpdateEmployee{
     positionId: number;
     departmentId: number;
     employeeParentId:string;
-    modifiedDate: Date;
+    // modifiedDate: Date;
 }

@@ -66,9 +66,11 @@ export class UserComponent implements OnInit {
         let addUserPermission : AddUserPermissions = {
             permissionIds: this.selectedPermissions.map(x=>x.id)
         }
-        this.userService.addUserPermission(userId,addUserPermission).subscribe((res)=>{
-            this.getUsers();
-        });
+        this.userService.deleteOldPermissions(userId).subscribe((result)=>{
+            this.userService.addUserPermission(userId,addUserPermission).subscribe((res)=>{
+                this.getUsers();
+            });
+        })
     }
 }
    

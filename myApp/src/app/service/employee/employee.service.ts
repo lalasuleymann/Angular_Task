@@ -15,8 +15,8 @@ export class EmployeeService{
 
     constructor(private main: MyMainService ,private http: HttpClient) {}
 
-    addEmployee(employee : AddEmployee) : Observable<employeeResponse>{
-        return this.http.post<employeeResponse>(`${this.baseApiUrl}`, employee, {headers: new HttpHeaders(this.main.headerDict)})
+    addEmployee(employee : AddEmployee) : Observable<addResponse>{
+        return this.http.post<addResponse>(`${this.baseApiUrl}`, employee, {headers: new HttpHeaders(this.main.headerDict)})
     }
 
     getAllEmployees() : Observable<employeeResponses>{
@@ -27,18 +27,18 @@ export class EmployeeService{
         return this.http.get<employeeResponses>(`${this.baseApiUrl}`, {headers: new HttpHeaders(this.main.headerDict)});
     }
 
-    updateEmployee(emp : number, employee: updateResponse) : Observable<updateResponse>{
-        return this.http.put<updateResponse>(`${this.baseApiUrl}${emp}`, employee, {headers: new HttpHeaders(this.main.headerDict)});
+    updateEmployee(emp : number, employee: Employee) : Observable<Employee>{
+        return this.http.put<Employee>(`${this.baseApiUrl}${emp}`, employee, {headers: new HttpHeaders(this.main.headerDict)});
     }
     
-    deleteEmployee(emp: number) : Observable<Employee>{
-        return this.http.delete<Employee>(`${this.baseApiUrl}${emp}`, {headers: new HttpHeaders(this.main.headerDict)});
+    deleteEmployee(emp: number) : Observable<AddEmployee>{
+        return this.http.delete<AddEmployee>(`${this.baseApiUrl}${emp}`, {headers: new HttpHeaders(this.main.headerDict)});
     }
 }
 export class employeeResponses{
     employee : Employee[];
 }
-export class employeeResponse{
+export class addResponse{
     employees : AddEmployee;
 }
 export class updateResponse{

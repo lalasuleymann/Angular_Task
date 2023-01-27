@@ -9,7 +9,7 @@ export class Employee{
     employeeParentId: number;
     employeeParentName: string;
     createdDate: Date;
-    modifiedDate: Date;
+    modifiedDate?: Date;
     positionId : number;
     positionName: string;
     departmentId: number;

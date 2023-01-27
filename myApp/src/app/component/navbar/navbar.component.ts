@@ -6,6 +6,7 @@ import { UserService } from "src/app/service/user/user.service";
 import { LoginComponent } from "../login/login.component";
 import { RegisterComponent } from "../register/register.component";
 import jwt_decode from 'jwt-decode';
+import { ConfigService } from "src/app/initializer/config.service";
 
 @Component({
     selector: 'app-navbar',
@@ -14,16 +15,14 @@ import jwt_decode from 'jwt-decode';
   })
   export class NavbarComponent implements OnInit{
 
-    visibility: boolean = false
-    userName: string;
-    z: any;
-    userSurname: string;
-    user: User;
-    constructor(public userService: UserService,public authService: AuthService, private router: Router){}
+    constructor(public config: ConfigService,public authService: AuthService, private router: Router){}
     ngOnInit(): void {
     }
     logOut(){
       this.router.navigateByUrl('/login');
       this.authService.removeToken();
+    }
+    hasPermission(){
+      console.log(this.config);
     }
   }

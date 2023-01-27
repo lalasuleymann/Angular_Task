@@ -1,8 +1,9 @@
-import { NgModule } from '@angular/core';
+  import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http'
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { CommonModule } from '@angular/common';
 import { ToastrModule } from 'ngx-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
@@ -34,6 +35,7 @@ import { UserWPComponent } from './component/userWithoutPermission/user.wp.compo
     UserWPComponent
   ],
   imports: [
+    CommonModule,
     NgMultiSelectDropDownModule.forRoot(),
     ToastrModule.forRoot(),
     BrowserModule,

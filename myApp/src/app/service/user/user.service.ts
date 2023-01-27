@@ -14,6 +14,7 @@ export class UserService{
     baseApiUrl: string = 'https://localhost:44305/api/v1/identity';
     baseApiUrl2: string = 'https://localhost:44305/api/v1/userpermission?id=';
     baseApiUrl3: string = 'https://localhost:44305/api/v1/userpermission?userId=';
+
     constructor(private main: MyMainService ,private http: HttpClient) {}
 
     getAllUsers() : Observable<signedUsers>{
@@ -26,6 +27,10 @@ export class UserService{
 
     addUserPermission(userId : number, addUserPermission : AddUserPermissions) : Observable<userPermissionResponse>{
         return this.http.post<userPermissionResponse>(`${this.baseApiUrl3}${userId}`, addUserPermission)
+    }
+
+    deleteOldPermissions(userId: number): Observable<AddUserPermissions>{
+    return this.http.delete<AddUserPermissions>(`${this.baseApiUrl3}${userId}`)
     }
 }
 

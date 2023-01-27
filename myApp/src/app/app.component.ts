@@ -14,8 +14,6 @@ export class AppComponent implements OnInit{
   show = false;
   constructor(public authService: AuthService, private router: Router, private http: HttpClient){}
   ngOnInit() {
-    // this.http.get('https://localhost:44305/api/v1/employee').subscribe()
-    // this.authService.autoLogin();
   }
 
   logOut(){

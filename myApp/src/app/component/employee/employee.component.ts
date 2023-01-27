@@ -28,7 +28,6 @@ import { PositionService } from "src/app/service/position/position.service";
 export class EmployeeComponent implements OnInit {
     employee: Employee;
     currentEmployeeId: number;
-    currenttEmployeeId: number;
     employeeForm: FormGroup;
     employees: Employee[] = [];
     updateEmployees: UpdateEmployee[] = [];
@@ -71,6 +70,7 @@ export class EmployeeComponent implements OnInit {
     ngOnInit(): void {
 
         this.employeeForm = this.formBuilder.group({
+            id: [''],
             name: ['', Validators.required],
             surname: ['', Validators.required],
             birthDate: ['', Validators.required],
@@ -148,6 +148,7 @@ export class EmployeeComponent implements OnInit {
     }
 
     updateEmployee() {
+        // debugger;
         if (this.employeeForm.valid) {
             this.employeeService.updateEmployee(this.currentEmployeeId, this.employeeForm.value)
                 .subscribe({
@@ -162,7 +163,7 @@ export class EmployeeComponent implements OnInit {
 
     editEmployee(empId: number) {
         this.currentEmployeeId = empId;
-        let currentEmployee = this.updateEmployees.find((d) => { return d.id === empId });
+        let currentEmployee = this.employees.find((e) => { return e.id === empId });
         this.employeeForm.setValue({
             id: currentEmployee.id,
             name: currentEmployee.name,
@@ -171,7 +172,6 @@ export class EmployeeComponent implements OnInit {
             positionId: currentEmployee.positionId,
             departmetId: currentEmployee.departmentId,
             employeeParentId: currentEmployee.employeeParentId,
-            modifiedDate: currentEmployee.modifiedDate.getDate
         })
     }
 

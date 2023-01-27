@@ -1,10 +1,10 @@
-import { Component, EventEmitter, OnInit } from "@angular/core"; 
+import { style } from "@angular/animations";
+import { Component, OnInit } from "@angular/core"; 
 import {FormGroup, FormBuilder, FormControl, Validators} from '@angular/forms'
-import { Toast, ToastrService } from "ngx-toastr";
+import { ToastrService } from "ngx-toastr";
 import { AddDepartment } from "src/app/model/department/addDepartment";
 import { Department } from "src/app/model/department/department";
 import { DepartmentService } from "src/app/service/department/department.service";
-
 @Component({ 
     selector : 'app-department',
     templateUrl : './department.component.html',
@@ -13,12 +13,12 @@ import { DepartmentService } from "src/app/service/department/department.service
 
 export class DepartmentComponent implements OnInit{
 
-        departmentForm : FormGroup;
+    departmentForm : FormGroup;
     department : Department;
     departments : Department[] = [];
     currentDepartmentId: number;
 
-    constructor(private toastr: ToastrService,private formBuilder: FormBuilder, private departmentService: DepartmentService) {
+    constructor(private toastr: ToastrService, private formBuilder: FormBuilder, private departmentService: DepartmentService) {
         this.department ={
             name : '',
             createdDate: Date=null,
@@ -39,14 +39,18 @@ export class DepartmentComponent implements OnInit{
     
     getAllDepartments(){
         this.departmentService.getAllDepartments().subscribe(res=>{
-                this.departments =res.departments;
+            this.departments =res.departments;
+            // this.toastr.error("asdasd","asdas", {
+            //     positionClass: 'toast-bottom-center',
+            //     toastClass: 'ngx-toastr',
+            //     timeOut:3000,
+            //     tapToDismiss: true
+            // })
         }); 
     }
-    
     addDepartment() {
         let department : AddDepartment = {
             name : this.Name.value,
-
         }
 
         this.departmentService.addDepartment(department).subscribe((res)=>{
