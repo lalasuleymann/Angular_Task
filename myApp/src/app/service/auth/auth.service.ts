@@ -2,6 +2,8 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { BehaviorSubject } from "rxjs";
+import { ConfigService } from "src/app/initializer/config.service";
+import { BaseService } from "../baseUrl.component";
 
 @Injectable({
     providedIn : 'root'
@@ -9,15 +11,16 @@ import { BehaviorSubject } from "rxjs";
 export class AuthService{
 
     currentUser: BehaviorSubject<any> = new BehaviorSubject(null);
-    baseApiUrl: string = 'https://localhost:44305/api/v1/identity/';
-
+    
+    constructor(private base: BaseService,private config: ConfigService,private http: HttpClient) {}
+    
     jwtHelperService = new JwtHelperService();
-    constructor(private http: HttpClient) {}
-
+    baseApiUrlForUser = this.base.BaseApiUrl + 'identity/';
+    
     loginUser(loginInfo: Array<any>)
     {
         return this.http.post(
-            this.baseApiUrl + 'login',
+            this.baseApiUrlForUser + 'login',
             {
                 Email: loginInfo[0],
                 Password: loginInfo[1],
@@ -31,7 +34,7 @@ export class AuthService{
     registerUser(registerInfo: Array<any>)
     {
         return this.http.post(
-            this.baseApiUrl + 'register',
+            this.baseApiUrlForUser + 'register',
             {
                 Name: registerInfo[0],
                 Surname: registerInfo[1],
@@ -44,6 +47,19 @@ export class AuthService{
             })
     }
 
+    hasEmployeePermission(){
+        this.config.settings?.permissions?.grantedPermissions.includes("Employee");
+    }
+    hasDepartmentPermission(){
+        this.config.settings?.permissions?.grantedPermissions.includes("Department");
+    }
+    hasPositionPermission(){
+        this.config.settings?.permissions?.grantedPermissions.includes("Position");
+    }
+    hasAdminPermission(){
+        this.config.settings?.permissions?.grantedPermissions.includes("Admin");
+    }
+    
     setToken(token: string){
         localStorage.setItem("access_token", token);
         this.loadCurrentUser();

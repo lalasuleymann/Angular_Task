@@ -1,7 +1,10 @@
 import { style } from "@angular/animations";
+import { HttpStatusCode } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core"; 
 import {FormGroup, FormBuilder, FormControl, Validators} from '@angular/forms'
+import { NgConfirmService } from "ng-confirm-box";
 import { ToastrService } from "ngx-toastr";
+import { ConfigService } from "src/app/initializer/config.service";
 import { AddDepartment } from "src/app/model/department/addDepartment";
 import { Department } from "src/app/model/department/department";
 import { DepartmentService } from "src/app/service/department/department.service";
@@ -18,7 +21,9 @@ export class DepartmentComponent implements OnInit{
     departments : Department[] = [];
     currentDepartmentId: number;
 
-    constructor(private toastr: ToastrService, private formBuilder: FormBuilder, private departmentService: DepartmentService) {
+    constructor(private confirmService: NgConfirmService,
+        private config:ConfigService, private toastr: ToastrService, 
+        private formBuilder: FormBuilder, private departmentService: DepartmentService) {
         this.department ={
             name : '',
             createdDate: Date=null,
@@ -37,24 +42,31 @@ export class DepartmentComponent implements OnInit{
         this.getAllDepartments();
     }
     
+    hasDepartmentCreatePermission(){
+        this.config.settings?.permissions?.grantedPermissions.includes("Department.Create");
+    }
+
+    hasDepartmentUpdatePermission(){
+        this.config.settings?.permissions?.grantedPermissions.includes("Department.Update");
+    }
+    
+    hasDepartmentDeletePermission(){
+        this.config.settings?.permissions?.grantedPermissions.includes("Department.Delete");
+    }
+
     getAllDepartments(){
         this.departmentService.getAllDepartments().subscribe(res=>{
             this.departments =res.departments;
-            // this.toastr.error("asdasd","asdas", {
-            //     positionClass: 'toast-bottom-center',
-            //     toastClass: 'ngx-toastr',
-            //     timeOut:3000,
-            //     tapToDismiss: true
-            // })
         }); 
     }
     addDepartment() {
         let department : AddDepartment = {
             name : this.Name.value,
         }
-
+        
         this.departmentService.addDepartment(department).subscribe((res)=>{
             this.getAllDepartments();
+            this.toastr.success("Department Added!");
         });
         this.departmentForm.reset();
     }
@@ -66,10 +78,10 @@ export class DepartmentComponent implements OnInit{
                 next:(res)=>{
                     this.departmentForm.reset();
                     this.getAllDepartments();
+                    this.toastr.success("Department Updated!");
                 }
             });
         }
-        this.getAllDepartments();
     }
 
     editDepartment(depId: number) {
@@ -85,12 +97,17 @@ export class DepartmentComponent implements OnInit{
 
     public collection : any = [];
     deleteDepartment(dep: number) {
-        alert('Sure to Delete?');
-        this.collection.pop();
-        this.departmentService.deleteDepartment(dep).subscribe((result)=>{
-            this.getAllDepartments();
-        });
-        this.getAllDepartments();
+        this.confirmService.showConfirm("Sure to Delete?",
+        ()=>{
+            this.collection.pop();
+            this.departmentService.deleteDepartment(dep).subscribe((result)=>{
+                this.getAllDepartments();
+                    this.toastr.success("Department Deleted!");
+            });
+        },
+        ()=>[
+            this.toastr.error("Department is not Deleted!")
+        ]);
     }
     
     get Name(): FormControl{

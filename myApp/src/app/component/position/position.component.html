@@ -1,6 +1,6 @@
 <app-navbar></app-navbar>
 <div class="container-fluid">
-    <button class="btn btn-outline-success mt-3" data-bs-toggle="modal" data-bs-target="#addPosition" type="submit">Add Position</button>
+    <button class="btn btn-outline-success mt-3" data-bs-toggle="modal" data-bs-target="#addPosition" type="submit" *ngIf="this.hasPositionCreatePermission">Add Position</button>
 
   <table class="table table-hover">
       <thead>
@@ -9,15 +9,15 @@
         <th scope="col">Name</th>
         <th scope="col">Created Date</th>
         <th scope="col">Modified Date</th>
-        <th scope="col">Action</th>
+        <th scope="col" *ngIf="this.hasPositionUpdatePermission && this.hasPositionDeletePermission">Action</th>
       </tr>
       </thead>
       <tbody>
         <tr *ngFor="let position of positions">
           <td>{{position.id}}</td>
           <td>{{position.name}}</td>
-          <td>{{position.createdDate}}</td>
-          <td>{{position.modifiedDate}}</td>
+          <td>{{position.createdDate | customDate}}</td>
+          <td>{{position.modifiedDate | customDate}}</td>
           <td>
               <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#editPosition" (click)="editPosition(position.id)">Edit</button>
               <button type="button" class="btn btn-outline-danger" (click)="deletePosition(position.id)">Delete</button>

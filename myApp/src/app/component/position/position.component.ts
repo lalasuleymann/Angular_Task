@@ -8,6 +8,9 @@ import { ToastrModule, ToastrService } from "ngx-toastr";
 import { Router } from "@angular/router";
 import { UserPermission } from "src/app/model/userPermission/userpermission";
 import { addPosition } from "src/app/model/position/addPosition";
+import { ConfigService } from "src/app/initializer/config.service";
+import { NgConfirmService } from "ng-confirm-box";
+import { HttpStatusCode } from "@angular/common/http";
 @Component({ 
     templateUrl : './position.component.html',
     styleUrls: ['./position.component.css']
@@ -20,7 +23,9 @@ export class PositionComponent implements OnInit{
     currentPositionId: number;
     userPermission: UserPermission
 
-    constructor(private router: Router,private toast:ToastrService,public permissionService: PermissionService, private formBuilder: FormBuilder, private positionService: PositionService) { 
+    constructor(private confirmService: NgConfirmService,private config: ConfigService,private router: Router, 
+        private toastr:ToastrService,public permissionService: PermissionService, 
+        private formBuilder: FormBuilder, private positionService: PositionService) { 
         this.position ={
             name : '',
             createdDate : Date= null,
@@ -36,15 +41,20 @@ export class PositionComponent implements OnInit{
             createdDate : [''],
             modifiedDate : [''],
         });
-
-        // this.permissionService.checkPermission(this.userPermission).subscribe(res=>{
-        //     if(true){
-                this.getAllPositions();
-        //     }else{
-        //         this.toast.error("You have no Permission for this action!");
-        //     }
-        // });
+        this.getAllPositions();
         
+    }
+
+    hasPositionCreatePermission(){
+        this.config.settings?.permissions?.grantedPermissions.includes("Position.Create");
+    }
+
+    hasPositionUpdatePermission(){
+        this.config.settings?.permissions?.grantedPermissions.includes("Position.Update");
+    }
+    
+    hasPositionDeletePermission(){
+        this.config.settings?.permissions?.grantedPermissions.includes("Position.Delete");
     }
 
     getAllPositions() {
@@ -52,24 +62,15 @@ export class PositionComponent implements OnInit{
             this.positions = res.positions;
         });
     }
-
-    // isDisable(){
-    //     this.permissionService.checkPermission(this.userPermission).subscribe(res=>{
-    //         if(true){
-                
-    //         }else{
-    //             this.toast.error("You have no Permission for this action!");
-    //         }
-    //     })
-    // }
     
     addPosition() {
         let position : addPosition = {
             name : this.Name.value,
         }
-      
+
         this.positionService.addPosition(position).subscribe((res)=>{
             this.getAllPositions();
+            this.toastr.success("Position Added!");
         }); 
         this.positionForm.reset();
     }
@@ -81,10 +82,10 @@ export class PositionComponent implements OnInit{
                 next:(res)=>{
                     this.positionForm.reset();
                     this.getAllPositions();
+                    this.toastr.success("Position Updated!");
                 }
             });
         }
-        this.getAllPositions();
     }
 
     editPosition(posId: number) {
@@ -100,11 +101,17 @@ export class PositionComponent implements OnInit{
 
     public collection : any = [];
     deletePosition(pos: number) {
-        alert('Sure to Delete?');
-        this.collection.pop();
-        this.positionService.deletePosition(pos).subscribe((result)=>{
-            this.getAllPositions();
-        });
+        this.confirmService.showConfirm("Sure to Delete?",
+        ()=>{
+            this.collection.pop();
+            this.positionService.deletePosition(pos).subscribe((result)=>{
+                this.getAllPositions();
+                    this.toastr.success("Position Deleted!");
+            });
+        },
+        ()=>[
+            this.toastr.error("Position is not Deleted!")
+        ]);
     }
     
     get Name(): FormControl{

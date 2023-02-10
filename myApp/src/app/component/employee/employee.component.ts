@@ -1,11 +1,13 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpStatusCode } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
+import { NgConfirmService } from "ng-confirm-box";
 import { ToastrService } from "ngx-toastr";
-import { filter } from "rxjs";
+import { ConfigService } from "src/app/initializer/config.service";
 import { Department } from "src/app/model/department/department";
 import { AddEmployee } from "src/app/model/employee/addEmployee";
+import { EmpDep } from "src/app/model/employee/empDep";
 import { Employee } from "src/app/model/employee/employee";
 import { UpdateEmployee } from "src/app/model/employee/updateEmployee";
 import { Permission } from "src/app/model/permission/permission";
@@ -33,6 +35,8 @@ export class EmployeeComponent implements OnInit {
     updateEmployees: UpdateEmployee[] = [];
 
     dependentEmployee: Employee[] = [];
+    managerEmployee: Employee[] = [];
+    deps: EmpDep[] = [];
     positions: Position[] = [];
     user: User;
     userPermission: UserPermission
@@ -44,7 +48,8 @@ export class EmployeeComponent implements OnInit {
     dropdownList;
     selectedDepartments;
 
-    constructor(private toastr: ToastrService,
+    constructor(private confirmService:NgConfirmService,
+        private config: ConfigService, private toastr: ToastrService,
         private authService: AuthService, private permissionService: PermissionService,
         private router: Router, private managerService: ManagerService,
         private dependentService: DependentService, private formBuilder: FormBuilder,
@@ -58,7 +63,7 @@ export class EmployeeComponent implements OnInit {
             employeeParentName: '',
             positionId: 0,
             positionName: '',
-            departmentId: 0,
+            departmentIds: [],
             departmentName: '',
             createdDate: Date = null,
             modifiedDate: Date = null,
@@ -76,16 +81,14 @@ export class EmployeeComponent implements OnInit {
             birthDate: ['', Validators.required],
             employeeParentId: [''],
             positionId: [''],
-            departmentId: [''],
+            departmentIds: [''],
         });
 
-        this.departmentForm = this.formBuilder.group({
-            departmentIds: [{ name: '' }, Validators.required]
-        });
         this.dropdownSettings = {
             singleSelection: false,
             idField: 'id',
             textField: 'name',
+            selection: false,
             selectAllText: 'Select All',
             unSelectAllText: 'UnSelect All'
         };
@@ -93,8 +96,23 @@ export class EmployeeComponent implements OnInit {
         this.getAllEmployees();
         this.refreshed();
     }
+    
+    hasEmployeeCreatePermission(){
+        this.config.settings?.permissions?.grantedPermissions.includes("Employee.Create");
+    }
 
-    getAllEmployees() {
+    hasEmployeeUpdatePermission(){
+        this.config.settings?.permissions?.grantedPermissions.includes("Employee.Update");
+    }
+    hasEmployeeDeletePermission(){
+        this.config.settings?.permissions?.grantedPermissions.includes("Employee.Delete");
+    }
+    
+    hasDependentEmployeePermission(){
+        this.config.settings?.permissions?.grantedPermissions.includes("Manage.Dependent");
+    }
+
+    getAllEmployees() { 
         this.employeeService.getAllEmployees().subscribe(res => {
             this.employees = res.employee;
         });
@@ -126,10 +144,11 @@ export class EmployeeComponent implements OnInit {
             birthDate: this.Birthdate.value,
             employeeParentId: this.EmployeeParentId.value,
             positionId : this.PositionId.value,
-            departmentId : this.DepartmentId.value
+            departmentIds : this.selectedDepartments.map(x=>x.id)
         }
         this.employeeService.addEmployee(employee).subscribe((res) => {
             this.getAllEmployees();
+            this.toastr.success("Employee Added!");
         });
         this.employeeForm.reset();
     }
@@ -140,25 +159,35 @@ export class EmployeeComponent implements OnInit {
         });
     }
 
-    managerEmployees(empId: number) {
+    employeeDepartment(empId : number){
+        this.departmentService.getAllDepartments().subscribe(res => {
+        this.employeeService.getEmployeeDepartment(empId).subscribe((result)=>{
+            this.deps = result;
+        });
+            this.departments = res.departments;
+            this.dropdownList = this.departments;
+        });
+    }
+
+/////////////////////////////////////////////////////////////////////////////////////////
+
+    getManagerEmployee(empId: number) {
         this.managerService.getAllManagerEmployees(empId).subscribe(res => {
-            if (empId !== res.id)
-                this.managers = res;
+            this.managerEmployee = res.employee;
         });
     }
 
     updateEmployee() {
-        // debugger;
         if (this.employeeForm.valid) {
             this.employeeService.updateEmployee(this.currentEmployeeId, this.employeeForm.value)
                 .subscribe({
                     next: (res) => {
                         this.employeeForm.reset();
                         this.getAllEmployees();
+                        this.toastr.success("Employee Updated!");
                     }
                 });
         }
-        this.getAllEmployees();
     }
 
     editEmployee(empId: number) {
@@ -170,18 +199,28 @@ export class EmployeeComponent implements OnInit {
             surname: currentEmployee.surname,
             birthDate: currentEmployee.birthDate,
             positionId: currentEmployee.positionId,
-            departmetId: currentEmployee.departmentId,
+            departmentIds: currentEmployee.departmentIds,
             employeeParentId: currentEmployee.employeeParentId,
         })
     }
 
     public collection: any = [];
     deleteEmployee(emp: number) {
-        alert('Sure to Delete?');
-        this.collection.pop();
-        this.employeeService.deleteEmployee(emp).subscribe((result) => {
-            this.getAllEmployees();
-        });
+        this.confirmService.showConfirm("Sure to Delete?",
+        ()=>{
+            this.collection.pop();
+            this.employeeService.deleteEmployee(emp).subscribe((result)=>{
+                this.getAllEmployees();
+                if(HttpStatusCode.BadRequest | HttpStatusCode.NotAcceptable){
+                    this.toastr.error("Employee can not be Deleted due to internal error!");
+                }else{
+                    this.toastr.success("Employee Deleted!");
+                }
+            });
+        },
+        ()=>[
+            this.toastr.error("Employee is not Deleted!")
+        ]);
     }
 
     get Name(): FormControl {
@@ -196,8 +235,8 @@ export class EmployeeComponent implements OnInit {
     get PositionId(): FormControl {
         return this.employeeForm.get('positionId') as FormControl;
     }
-    get DepartmentId(): FormControl {
-        return this.employeeForm.get('departmentId') as FormControl;
+    get DepartmentIds(): FormControl {
+        return this.employeeForm.get('departmentIds') as FormControl;
     }
     get EmployeeParentId(): FormControl {
         return this.employeeForm.get('employeeParentId') as FormControl;

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { switchMap } from 'rxjs';
@@ -11,8 +11,11 @@ import { AuthService } from './service/auth/auth.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit{
-  show = false;
-  constructor(public authService: AuthService, private router: Router, private http: HttpClient){}
+  results;
+  constructor(public authService: AuthService, private router: Router, private http: HttpClient){
+    const path = 'https://localhost:44305/api/v1/config';
+    this.results = http.get(path);
+  }
   ngOnInit() {
   }
 

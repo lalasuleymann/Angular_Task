@@ -1,29 +1,21 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, filter, map } from "rxjs";
+import { Config } from "./config";
 
-interface Endpoints{ api : string; }
 @Injectable({
     providedIn: 'root'
 })
 export class ConfigService{
-    [x: string]: any;
+    private configSettings: any;
+    config: Config
+    constructor() {}
 
-    private endpoints = new BehaviorSubject<Endpoints | null>(null);
-    readonly api$ = this.endpoints.asObservable().pipe(
-        filter(endpoints => !!endpoints),
-        map(endpoints => endpoints?.api)
-    )
-    get api(){
-        return this.endpoints.getValue()?.api;
+    get settings() {
+        return this.configSettings;
     }
-    constructor(private http: HttpClient){}
 
-    fetchEndpoints(){
-          this.http.get<Endpoints>('https://localhost:44305/api/v1/config')
-          .subscribe({
-            next: (endpoints) => this.endpoints.next(endpoints),
-            error: () => this.endpoints.next({api: ''})
-          });
+    init(configSettings: any) {
+        this.configSettings = configSettings;
     }
 }

@@ -1,7 +1,7 @@
-  import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClient, HttpClientModule, HttpHeaders, HTTP_INTERCEPTORS } from '@angular/common/http'
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { CommonModule } from '@angular/common';
 import { ToastrModule } from 'ngx-toastr';
@@ -15,12 +15,30 @@ import { DepartmentComponent } from './component/department/department.component
 import { PositionComponent } from './component/position/position.component';
 import { RegisterComponent } from './component/register/register.component';
 import { GuardService } from './service/guard/guard.service';
-import { InitializerModule } from './initializer/initializer.module';
 import { NavbarComponent } from './component/navbar/navbar.component';
 import { DependentComponent } from './component/manage/dependent/depentend.component';
 import { UserComponent } from './component/user/user.component';
 import { UserWPComponent } from './component/userWithoutPermission/user.wp.component';
+import { ConfigService } from './initializer/config.service';
+import { TokenInterceptor } from './service/token-interceptor';
+import { CustomDatePipe } from './service/custom.datepipe';
+import { NgConfirmModule } from 'ng-confirm-box';
+import { LuxonModule } from 'luxon-angular';
 
+const initializeConfig = (
+  configService: ConfigService,
+  http: HttpClient
+) => {
+  return () => {
+    return new Promise((resolve) => {
+      http.get<any>('https://localhost:44305/api/v1/config')
+          .subscribe((result)=>{
+          configService.init(result);
+          return resolve('Success');
+          })
+        });
+    }
+  };
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,6 +50,7 @@ import { UserWPComponent } from './component/userWithoutPermission/user.wp.compo
     RegisterComponent,
     DependentComponent,
     UserComponent,
+    CustomDatePipe,
     UserWPComponent
   ],
   imports: [
@@ -41,12 +60,25 @@ import { UserWPComponent } from './component/userWithoutPermission/user.wp.compo
     BrowserModule,
     appRoutingModule,
     HttpClientModule,
-    InitializerModule,
+    LuxonModule,
+    NgConfirmModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule
   ],
-  providers: [GuardService],
+  providers: [ConfigService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeConfig,
+      deps: [ConfigService, HttpClient],
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    },
+    GuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

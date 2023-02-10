@@ -9,8 +9,8 @@ import { ConfigService } from "./config.service";
             multi: true,
             useFactory: (config: ConfigService)=>{
                 return ()=>{
-                     config.fetchEndpoints();
-                     return config.api$.pipe(take(1))
+                     config.settings();
+                     return config.init(take(1))
                 }
             },
             deps: [ConfigService]

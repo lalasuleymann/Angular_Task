@@ -24,9 +24,6 @@ export class UserComponent implements OnInit {
     dropdownList;
     selectedPermissions;
 
-    currentUserPermissions: string[];
-    permissionOptions = [];
-    userHasPermissions: boolean = false;
     constructor(private userService : UserService,  private formBuilder: FormBuilder, private permissionService: PermissionService){
         this.permissionForm = formBuilder.group({});
     }

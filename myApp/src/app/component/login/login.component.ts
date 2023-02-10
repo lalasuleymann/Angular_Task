@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild} from "@angular/core";
 import { CheckboxRequiredValidator, FormControl, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
 import { BehaviorSubject } from "rxjs";
 import { AppComponent } from "src/app/app.component";
 import { AuthService } from "src/app/service/auth/auth.service";
@@ -13,7 +14,7 @@ export class LoginComponent implements OnInit{
     jwtHelperService: any;
     checked : boolean = false;
     currentUser: BehaviorSubject<any> = new BehaviorSubject(null);
-    constructor(private router: Router, private loginAuth: AuthService){}
+    constructor(private toastr:ToastrService,private router: Router, private loginAuth: AuthService){}
     ngOnInit(): void {
     }
     loginForm = new FormGroup({

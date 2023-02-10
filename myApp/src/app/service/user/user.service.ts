@@ -1,36 +1,37 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient} from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { AddUserPermissions } from "src/app/model/userPermission/addUserPermission";
 import { User } from "src/app/model/user/user";
-import { MyMainService } from "../my-main.component";
 import { UsersPermisssionResponse } from "src/app/model/userPermission/usersPermissions";
+import { BaseService } from "../baseUrl.component";
 
 @Injectable({
     providedIn : 'root'
 })
 export class UserService{
 
-    baseApiUrl: string = 'https://localhost:44305/api/v1/identity';
-    baseApiUrl2: string = 'https://localhost:44305/api/v1/userpermission?id=';
-    baseApiUrl3: string = 'https://localhost:44305/api/v1/userpermission?userId=';
-
-    constructor(private main: MyMainService ,private http: HttpClient) {}
-
+    
+    constructor(private base: BaseService,private http: HttpClient) {}
+    
+    baseApiUrlForAdmin = this.base.BaseApiUrl + 'identity';
+    baseApiUrlForAdmin2 = this.base.BaseApiUrl + 'userpermission?id=';
+    baseApiUrlForAdmin3 = this.base.BaseApiUrl + 'userpermission?userId=';
+    
     getAllUsers() : Observable<signedUsers>{
-        return this.http.get<signedUsers>(`${this.baseApiUrl}`, {headers: new HttpHeaders(this.main.headerDict)});
+        return this.http.get<signedUsers>(`${this.baseApiUrlForAdmin}`);
     }
 
     getAllUserPermissionsById(userId : number):Observable<UsersPermisssionResponse[]>{
-        return this.http.get<UsersPermisssionResponse[]>(`${this.baseApiUrl2}${userId}`)
+        return this.http.get<UsersPermisssionResponse[]>(`${this.baseApiUrlForAdmin2}${userId}`)
     }
 
     addUserPermission(userId : number, addUserPermission : AddUserPermissions) : Observable<userPermissionResponse>{
-        return this.http.post<userPermissionResponse>(`${this.baseApiUrl3}${userId}`, addUserPermission)
+        return this.http.post<userPermissionResponse>(`${this.baseApiUrlForAdmin3}${userId}`, addUserPermission)
     }
 
     deleteOldPermissions(userId: number): Observable<AddUserPermissions>{
-    return this.http.delete<AddUserPermissions>(`${this.baseApiUrl3}${userId}`)
+    return this.http.delete<AddUserPermissions>(`${this.baseApiUrlForAdmin3}${userId}`)
     }
 }
 

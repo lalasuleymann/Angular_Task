@@ -4,6 +4,6 @@ export class AddEmployee{
     surname: string;
     birthDate: Date;
     positionId: number;
-    departmentId: number;
+    departmentIds: number[];
     employeeParentId:string;
 }

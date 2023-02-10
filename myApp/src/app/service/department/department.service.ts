@@ -1,33 +1,33 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient} from "@angular/common/http";
 import { Observable } from "rxjs";
 import { Department } from "../../model/department/department";
-import jwt_decode from 'jwt-decode';
-import { MyMainService } from "../my-main.component";
 import { AddDepartment } from "src/app/model/department/addDepartment";
+import { BaseService } from "../baseUrl.component";
 
 @Injectable({
     providedIn : 'root'
 })
 export class DepartmentService{
    
-    baseApiUrl: string = 'https://localhost:44305/api/v1/department/';
-    constructor(private main: MyMainService ,private http: HttpClient) {}
-
+    constructor(private base: BaseService,private http: HttpClient) {}
+    
+    baseApiUrlForDepartment = this.base.BaseApiUrl + 'department/';
+    
     addDepartment(department : AddDepartment) : Observable<departmentResponse>{
-        return this.http.post<departmentResponse>(`${this.baseApiUrl}`, department, {headers: new HttpHeaders(this.main.headerDict)})
+        return this.http.post<departmentResponse>(`${this.baseApiUrlForDepartment}`, department)
     }
 
     getAllDepartments() : Observable<departmentResponses>{
-        return this.http.get<departmentResponses>(`${this.baseApiUrl}`, {headers: new HttpHeaders(this.main.headerDict)});
+        return this.http.get<departmentResponses>(`${this.baseApiUrlForDepartment}`);
     }
 
     updateDepartment(dep: number, department: Department) : Observable<Department>{
-        return this.http.put<Department>(`${this.baseApiUrl}${dep}`, department, {headers: new HttpHeaders(this.main.headerDict)});
+        return this.http.put<Department>(`${this.baseApiUrlForDepartment}${dep}`, department);
     }
 
     deleteDepartment(dep: number) : Observable<Department>{
-        return this.http.delete<Department>(`${this.baseApiUrl}${dep}`, {headers: new HttpHeaders(this.main.headerDict)});
+        return this.http.delete<Department>(`${this.baseApiUrlForDepartment}${dep}`);
     }
 }
 

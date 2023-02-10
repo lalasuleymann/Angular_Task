@@ -1,6 +1,6 @@
 <app-navbar></app-navbar>
 <div class="container-fluid">
-      <button class="btn btn-outline-success mt-3" data-bs-toggle="modal" data-bs-target="#addEmployee" type="submit" (click)="getAllDepartments()" (click)="getAllPositions()">Add Employee</button>
+      <button class="btn btn-outline-success mt-3" data-bs-toggle="modal" data-bs-target="#addEmployee" type="submit" (click)="getAllDepartments()" (click)="getAllPositions()" *ngIf="this.hasEmployeeCreatePermission">Add Employee</button>
   
     <table class="table table-hover">
         <thead>
@@ -14,7 +14,7 @@
             <th scope="col">Manager</th>
             <th scope="col">Created Date</th>
             <th scope="col">Modified Date</th>
-            <th scope="col">Action</th>
+            <th scope="col" *ngIf="this.hasEmployeeUpdatePermission && this.hasEmployeeDeletePermission" >Action</th>
         </tr>
         </thead>
         <tbody>
@@ -24,14 +24,17 @@
             <td>{{employee.surname}}</td>
             <td>{{employee.birthDate}}</td>
             <td>{{employee.positionName}}</td>
-            <td>{{employee.departmentName}}</td>
+            <td>
+              <button class="btn btn-outline-success me-2" data-bs-toggle="modal" data-bs-target="#department" (click)="employeeDepartment(employee.id)">{{employee.name}}'s Departments</button>
+            </td>
             <td>{{employee.employeeParentName}}</td>
             <td>{{employee.createdDate}}</td>
             <td>{{employee.modifiedDate}}</td>
             <td>
-              <button class="btn btn-outline-success me-2" data-bs-toggle="modal" (click)="getAllDependentEmployees(employee.id)" data-bs-target="#dependent" type="submit">See Dependent Employees</button>
+              <button class="btn btn-outline-success me-2" data-bs-toggle="modal" (click)="getAllDependentEmployees(employee.id)" data-bs-target="#dependent" type="submit" *ngIf="this.hasDependentEmployeePermission">{{employee.name}}'s Employees</button>
+              <button class="btn btn-outline-success me-2 mt-1" data-bs-toggle="modal" (click)="getManagerEmployee(employee.id)" data-bs-target="#manager" type="submit">{{employee.name}}'s Manager</button>
               <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#editEmployee" (click)="getAllEmployees()"  (click)="getAllDepartments()" (click)="getAllPositions()" (click)="editEmployee(employee.id)">Edit</button>
-              <button type="button" class="btn btn-outline-danger" (click)="deleteEmployee(employee.id)">Delete</button>
+              <button type="button" class="btn btn-outline-danger mt-1" (click)="deleteEmployee(employee.id)">Delete</button>
             </td>
         </tr>
         </tbody>
@@ -81,11 +84,14 @@
                           <option *ngFor="let emp of employees" [value]="emp.id">{{ emp.name }}</option>
                         </select>
                       </div>
-                      <div class="input-group mb-3">
-                        <select class="form-select" formControlName="departmentId" id="inputGroupSelect04" aria-label="Example select with button addon">
-                          <option selected>Department</option>
-                          <option *ngFor="let dep of departments" [value]="dep.id">{{ dep.name }}</option>
-                        </select>
+                      <div class="mb-3" >
+                        <ng-multiselect-dropdown 
+                        [placeholder]="'Departments'"
+                        [settings]="dropdownSettings"
+                        [data]="dropdownList"
+                        [(ngModel)]="selectedDepartments"
+                        formControlName="departmentIds">
+                        </ng-multiselect-dropdown>
                       </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -100,7 +106,7 @@
   <!-- Add Employee Modal -->
 
   <!-- Manager Modal -->
-  <div class="modal fade" id="assignManager" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> 
+  <div class="modal fade" id="manager" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> 
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -108,19 +114,81 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <div class="input-group mb-3">
-            <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon">
-              <option >{{ this.managers?.name }}</option>
-            </select>
-          </div>
+          <div class="container-fluid">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                  <th scope="col">Id</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Surname</th>
+                </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let employee of managerEmployee">
+                    <td>{{employee.id}}</td>
+                    <td>{{employee.name}}</td>
+                    <td>{{employee.surname}}</td>
+                </tr>
+                </tbody>
+            </table>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
+      </div>
     </div>
   </div>
   <!-- Manager Modal -->
+
+    <!-- Show Department Modal -->
+    <div class="modal fade" id="department" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> 
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Department</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="container-fluid">
+              <div class="mb-3" >
+                <!-- <div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Departments
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" *ngFor="let dep of deps">
+                    <a class="dropdown-item" href="#">{{dep.name}}}</a>
+                  </div>
+                </div> -->
+                <table class="table table-hover">
+                  <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let employee of deps">
+                      <td>{{employee.name}}</td>
+                  </tr>
+                  </tbody>
+              </table>
+                <!-- <ng-multiselect-dropdown 
+                [placeholder]="'Departments'"
+                [settings]="dropdownSettings"
+                [data]="dropdownList"
+                [(ngModel)]="selectedDepartments"
+                formControlName="departmentIds">
+                </ng-multiselect-dropdown> -->
+              </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+    <!-- Show Department Modal -->
 
 <!-- Dependent Modal -->
 <div class="modal fade" id="dependent" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -192,22 +260,21 @@
                       <option *ngFor="let emp of employees" [value]="emp.id">{{ emp.name }}</option>
                     </select>
                   </div>
-                  <div class="input-group mb-3">
-                    <select class="form-select" formControlName="departmentId" id="inputGroupSelect04" aria-label="Example select with button addon">
+                  <!-- <div class="input-group mb-3">
+                    <select class="form-select" formControlName="departmentIds" id="inputGroupSelect04" aria-label="Example select with button addon">
                       <option selected>Department</option>
                       <option *ngFor="let dep of departments" [value]="dep.id">{{ dep.name }}</option>
                     </select>
-                  </div>
-                  <!-- <div class="mb-3" >
-                    <ng-multiselect-dropdown 
-                    formControlName="departmentId"
-                      [placeholder]="'Departments'"
-                      [settings]="dropdownSettings"
-                      [data]="dropdownList"
-                      [ngModel]="selectedDepartments"
-                      >
-                      </ng-multiselect-dropdown>
                   </div> -->
+                  <div class="mb-3" >
+                        <ng-multiselect-dropdown 
+                        [placeholder]="'Departments'"
+                        [settings]="dropdownSettings"
+                        [data]="dropdownList"
+                        [(ngModel)]="selectedDepartments"
+                        formControlName="departmentIds">
+                        </ng-multiselect-dropdown>
+                      </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-success" (click)="updateEmployee()" data-bs-dismiss="modal">Update</button>

@@ -1,6 +1,6 @@
 <app-navbar></app-navbar>
 <div class="container-fluid">
-    <button class="btn btn-outline-success mt-3" data-bs-toggle="modal" data-bs-target="#addDepartment" type="submit">Add Department</button>
+    <button class="btn btn-outline-success mt-3" data-bs-toggle="modal" data-bs-target="#addDepartment" type="submit" *ngIf="this.hasDepartmentCreatePermission">Add Department</button>
   <table class="table table-hover">
       <thead>
       <tr>
@@ -8,7 +8,7 @@
         <th scope="col">Name</th>
         <th scope="col">Created Date</th>
         <th scope="col">Modified Date</th>
-        <th scope="col">Action</th>
+        <th scope="col" *ngIf="this.hasDepartmentUpdatePermission && this.hasDepartmentDeletePermission">Action</th>
       </tr>
       </thead>
       <tbody>
